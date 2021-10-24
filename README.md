@@ -16,7 +16,7 @@ The Validation library is built to work with the Laravel Framework (>=7). It com
 
 ```php
 use Illuminate\Support\Facades\Validator;
-use Simtabi\Enekia\Rules\Creditcard;
+use Simtabi\Enekia\Rules\CardNumberBasic;
 use Simtabi\Enekia\Rules\HexColor;
 use Simtabi\Enekia\Rules\Username;
 
@@ -44,12 +44,12 @@ It is also possible to use this library without the Laravel framework. You won't
 
 ```php
 use Simtabi\Enekia\Validator;
-use Simtabi\Enekia\Rules\Creditcard;
+use Simtabi\Enekia\Rules\CardNumberBasic;
 use Simtabi\Enekia\Exceptions\ValidationException;
 
 // use static factory method to create laravel validator
 $validator = Validator::make($request->all(), [
-    'ccnumber' => new Creditcard(),
+    'ccnumber' => new CardNumberBasic(),
     'iban' => ['required', new Iban()],
 ]);
 
@@ -94,11 +94,11 @@ Check if the value is a [Classless Inter-Domain Routing](https://en.wikipedia.or
 
     public Simtabi\Enekia\Rules\Cidr::__construct()
 
-## Creditcard Number 
+## CardNumberBasic
 
 The field under validation must be a valid [creditcard number](https://en.wikipedia.org/wiki/Payment_card_number).
 
-    public Simtabi\Enekia\Rules\Creditcard::__construct()
+    public Simtabi\Enekia\Rules\CreditCard\CardNumberBasic::__construct()
 
 ## Data URI scheme
 

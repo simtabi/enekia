@@ -1,10 +1,11 @@
 <?php
 
-namespace Simtabi\Enekia\Rules;
+namespace Simtabi\Enekia\Rules\CreditCard;
 
 use Illuminate\Contracts\Validation\Rule;
+use Simtabi\Enekia\Rules\Luhn;
 
-class Creditcard extends Luhn implements Rule
+class CardNumberBasic extends Luhn implements Rule
 {
     /**
      * Determine if the validation rule passes.
@@ -21,6 +22,7 @@ class Creditcard extends Luhn implements Rule
     /**
      * Check if the given value has the proper length for creditcards
      *
+     * @param $value
      * @return boolean
      */
     private function hasValidLength($value): bool
