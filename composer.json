@@ -1,0 +1,46 @@
+{
+    "name": "simtabi/enekia",
+    "description": "Additional validation rules for the Laravel framework",
+    "keywords": ["validation", "Validator", "laravel", "bic", "iban", "creditcard", "isbn", "ean", "gtin", "isin", "luhn", "base64", "data-url", "ulid"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Simtabi",
+            "email": "info@simtabi.com",
+            "homepage": "https://simtabi.com/"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^7.4|^8.0",
+        "illuminate/validation": "~7|~8",
+        "snipe/banbuilder": "^2.2.5",
+        "league/iso3166": "^3.0",
+        "eonx-com/currencies": "^1.0.3",
+        "astrotomic/iso639": "^1.0",
+        "divineomega/password_exposed": "^3.2.0",
+        "giggsey/libphonenumber-for-php": "^8.12"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "phpstan/phpstan": "^0.12.17"
+    },
+    "autoload": {
+        "psr-4": {
+            "Simtabi\\Enekia\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Simtabi\\Enekia\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Simtabi\\Enekia\\Providers\\EnekiaServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
