@@ -5,7 +5,6 @@ return [
     'iban'                             => 'The :attribute must be a valid International Bank Account Number (IBAN).',
     'bic'                              => 'The :attribute is not a valid Business Identifier Code (BIC).',
     'hex_color'                        => 'The :attribute must be a valid hexadecimal color code.',
-    'credit_card'                      => 'The :attribute must be a valid creditcard number.',
     'isbn'                             => ':attribute must be a valid (ISBN 10 or ISBN 13) International Standard Book Number (ISBN).',
     'username'                         => 'The value :attribute must be a valid username.',
     'html_clean'                       => 'The value :attribute contains forbidden HTML code.',
@@ -144,4 +143,8 @@ return [
     ],
     'encoded_image'                     => 'The :attribute must be a valid :mimes image.',
     'citizenship_identification_number' => 'The :attribute must be a valid form of identification',
+    'credit_card'                       => [
+        'basic' => 'The :attribute must be a valid credit card number.'
+    ],
+
 ];

@@ -29,4 +29,18 @@ class CardNumberBasic extends Luhn implements Rule
     {
         return (strlen($value) >= 13 && strlen($value) <= 19);
     }
+
+
+
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function customMessage(): string
+    {
+        return __("validation::messages.credit_card.basic", [
+            'attribute' => $this->attribute,
+        ]);
+    }
 }
