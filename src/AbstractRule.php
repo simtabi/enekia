@@ -23,12 +23,17 @@ abstract class AbstractRule
     /** @var string */
     protected $attribute;
 
+    /** @var mixed */
+    protected $value;
+
     /**
-     * @param  string  $attribute
+     * @param string $attribute
+     * @return self
      */
-    public function setAttribute(string $attribute): void
+    public function setAttribute(string $attribute): self
     {
         $this->attribute = $attribute;
+        return $this;
     }
 
     /**
@@ -38,6 +43,25 @@ abstract class AbstractRule
     {
         return $this->attribute;
     }
+
+    /**
+     * @param mixed $value
+     * @return self
+     */
+    public function setValue(mixed $value): self
+    {
+        $this->value = $value;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue(): mixed
+    {
+        return $this->value;
+    }
+
 
     /**
      * Return shortname of current rule

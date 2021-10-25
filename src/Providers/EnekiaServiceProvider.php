@@ -14,6 +14,14 @@ class EnekiaServiceProvider extends ServiceProvider
 
     public function register()
     {
+        // Automatically apply the package configuration
+        $this->mergeConfigFrom(self::PATH . 'config/enekia.php', 'enekia');
+
+        // Register the main class to use with the facade
+        $this->app->singleton('enekia', function () {
+            return new SafeUsername;
+        });
+
         self::autoload(self::PATH . 'helpers');
     }
 
@@ -36,6 +44,10 @@ class EnekiaServiceProvider extends ServiceProvider
             $this->publishes([
                 self::PATH.'resources/lang' => resource_path('lang/vendor/' . self::PACKAGE_NAME),
             ], self::PACKAGE_NAME .':translations');
+
+            $this->publishes([
+                self::PATH . 'config/enekia.php' => config_path('enekia.php'),
+            ], self::PACKAGE_NAME .':config');
         }
     }
 
