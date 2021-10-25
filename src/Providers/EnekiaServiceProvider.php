@@ -15,7 +15,7 @@ class EnekiaServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(self::PATH . 'config/enekia.php', 'enekia');
+        $this->mergeConfigFrom(self::PATH . 'config/config.php', 'enekia');
 
         // Register the main class to use with the facade
         $this->app->singleton('enekia', function () {
