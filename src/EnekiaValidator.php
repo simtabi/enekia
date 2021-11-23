@@ -10,7 +10,7 @@ use Illuminate\Validation\Factory;
 use Illuminate\Validation\Validator as IlluminateValidator;
 use Simtabi\Enekia\Exceptions\ValidationException;
 
-class Validator
+class EnekiaValidator
 {
     use Traits\HasCurrentLocale;
 

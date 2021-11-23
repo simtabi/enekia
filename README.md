@@ -20,7 +20,7 @@ use Simtabi\Enekia\Rules\CardNumberBasic;
 use Simtabi\Enekia\Rules\HexColor;
 use Simtabi\Enekia\Rules\Username;
 
-$validator = Validator::make($request->all(), [
+$validator = EnekiaValidator::make($request->all(), [
     'color' => new Hexcolor(3), // pass rule as object
     'name' => ['required', 'min:3', 'max:20', new Username()], // combining rules works as well
 ]);
@@ -43,24 +43,24 @@ Or add your custom messages directly to the validator like [described in the doc
 It is also possible to use this library without the Laravel framework. You won't have the Laravel facades available, so make sure to use `Simtabi\Enekia\Validator` for your calls.
 
 ```php
-use Simtabi\Enekia\Validator;
+use Simtabi\Enekia\EnekiaValidator;
 use Simtabi\Enekia\Rules\CardNumberBasic;
 use Simtabi\Enekia\Exceptions\ValidationException;
 
 // use static factory method to create laravel validator
-$validator = Validator::make($request->all(), [
+$validator = EnekiaValidator::make($request->all(), [
     'ccnumber' => new CardNumberBasic(),
     'iban' => ['required', new Iban()],
 ]);
 
 // validate single values by calling static methods
-$result = Validator::isHexcolor('foobar'); // false
-$result = Validator::isHexcolor('#ccc'); // true
-$result = Validator::isBic('foo'); // false
+$result = EnekiaValidator::isHexcolor('foobar'); // false
+$result = EnekiaValidator::isHexcolor('#ccc'); // true
+$result = EnekiaValidator::isBic('foo'); // false
 
 // assert single values
 try {
-    Validator::assertHexcolor('foobar');
+    EnekiaValidator::assertHexcolor('foobar');
 } catch (ValidationException $e) {
     $message = $e->getMessage();
 }

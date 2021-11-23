@@ -10,11 +10,11 @@ use Exception;
 class Username extends AbstractRule implements Rule
 {
 
-    protected int $minLength;
-    protected int $maxLength;
-
     public const MIN_LENGTH = 3;
     public const MAX_LENGTH = 36;
+
+    protected int $minLength;
+    protected int $maxLength;
 
     /**
      * The collection of allowed usernames
@@ -26,14 +26,33 @@ class Username extends AbstractRule implements Rule
      */
     protected Collection $blacklisted;
 
-    public function __construct($minLength = self::MIN_LENGTH, $maxLength = self::MAX_LENGTH)
+    public function __construct()
     {
-        $this->whitelisted = collect(config('config.username.allowed'));
-        $this->blacklisted = collect(config('config.username.base'))->merge(config('config.username.disallowed'));
-
-        $this->minLength   = $minLength >= self::MIN_LENGTH                                       ? $minLength : self::MIN_LENGTH;
-        $this->maxLength   = ($maxLength >= self::MAX_LENGTH) && ($maxLength <= self::MAX_LENGTH) ? $maxLength : self::MAX_LENGTH;
+        $this->whitelisted = collect(config('enekekia.username.allowed'));
+        $this->blacklisted = collect(config('enekekia.username.base'))->merge(config('enekekia.username.disallowed'));
     }
+
+    /**
+     * @param int|mixed $minLength
+     * @return self
+     */
+    public function setMinLength(int $minLength = self::MIN_LENGTH): self
+    {
+        $this->minLength = $minLength >= self::MIN_LENGTH ? $minLength : self::MIN_LENGTH;
+        return $this;
+    }
+
+    /**
+     * @param int|mixed $maxLength
+     * @return self
+     */
+    public function setMaxLength(int $maxLength = self::MAX_LENGTH): self
+    {
+        $this->maxLength = ($maxLength >= self::MAX_LENGTH) && ($maxLength <= self::MAX_LENGTH) ? $maxLength : self::MAX_LENGTH;
+        return $this;
+    }
+    
+    
 
     /**
      * Determine if the validation rule passes.
