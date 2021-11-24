@@ -86,7 +86,7 @@ class EncodedImage extends AbstractRule implements Rule
 
         $mimes[count($mimes) - 1] = 'or ' . $mimes[count($mimes) - 1];
 
-        return __("validation::messages.encoded_image", [
+        return __("ekenia::messages.encoded_image", [
             'attribute' => $this->attribute,
             'mimes'     => implode(', ', $mimes),
         ]);

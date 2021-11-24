@@ -39,7 +39,7 @@ class CardNumberBasic extends Luhn implements Rule
      */
     public function customMessage(): string
     {
-        return __("validation::messages.credit_card.basic", [
+        return __("ekenia::messages.credit_card.basic", [
             'attribute' => $this->attribute,
         ]);
     }

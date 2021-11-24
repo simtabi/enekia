@@ -7,10 +7,12 @@ return [
     'hex_color'                        => 'The :attribute must be a valid hexadecimal color code.',
     'isbn'                             => ':attribute must be a valid (ISBN 10 or ISBN 13) International Standard Book Number (ISBN).',
     'username'                         => [
-        'blacklisted' => 'The supplied :attribute can not be used. Chose different one',
-        'too_short'   => 'The supplied :attribute is too short for a username.',
-        'too_long'    => 'The supplied :attribute is too long for a username.',
-        'invalid'     => 'The supplied :attribute is invalid, please try again with a different username.',
+        'blacklisted'    => 'The supplied :attribute is not allowed list and can not be used. Chose different one.',
+        'too_short'      => 'The supplied :attribute is too short.',
+        'too_long'       => 'The supplied :attribute is too long.',
+        'invalid'        => 'The supplied :attribute is invalid. Should contain alpha-numeric (a-z, A-Z, 0-9), 
+         underscore and minus starts with an letter (alpha) underscores and minus are not allowed at the beginning or end 
+         multiple underscores and minus are not allowed (-- or _____).',
     ],
     'html_clean'                       => 'The value :attribute contains forbidden HTML code.',
     'domain_name'                      => ':attribute must be a well formed domain name.',

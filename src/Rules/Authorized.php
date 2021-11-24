@@ -49,7 +49,7 @@ class Authorized extends AbstractRule implements Rule
     {
         $classBasename = class_basename($this->className);
 
-        return __('validationRules::messages.authorized', [
+        return __('ekenia::messages.authorized', [
             'attribute' => $this->attribute,
             'ability' => $this->ability,
             'className' => $classBasename,

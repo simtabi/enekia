@@ -43,7 +43,7 @@ class DateHasSpecificMinutes extends AbstractRule implements Rule
      */
     public function customMessage(): string
     {
-        return trans('validation::messages.'.$this->shortname(), [
+        return trans('ekenia::messages.'.$this->shortname(), [
             'minutes' => implode(', ', $this->allowedMinutes)
         ]);
     }

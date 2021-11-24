@@ -107,7 +107,7 @@ class Country extends AbstractRule implements Rule
         }
 
         if (!empty($key)) {
-            return __("validation::messages.country.$key", [
+            return __("ekenia::messages.country.$key", [
                 'attribute' => $this->attribute,
             ]);
         }

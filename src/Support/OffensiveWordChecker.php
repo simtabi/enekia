@@ -19,7 +19,7 @@ class OffensiveWordChecker
 
     private function getCustomBlacklistedWords(array $blacklisted = []): array
     {
-        $path = '/tmp/CustomBadWords.json';
+        $path = '/tmp/custom-blacklist.json';
         file_put_contents($path, json_encode($blacklisted));
 
         $data = json_decode(file_get_contents($path));
@@ -28,13 +28,13 @@ class OffensiveWordChecker
 
     private function getBlacklistedWords(array $blacklisted = []): array
     {
-        $data = json_decode(file_get_contents(self::DATA_PATH.'BadWords.json'));
+        $data = json_decode(file_get_contents(self::DATA_PATH.'blacklisted.json'));
         return !empty($blacklisted) ? array_merge($blacklisted, $data) : $data;
     }
 
     private function getWhitelistedWords(array $whitelisted = []): array
     {
-        $data = json_decode(file_get_contents(self::DATA_PATH.'WhiteList.json'));
+        $data = json_decode(file_get_contents(self::DATA_PATH.'whitelisted.json'));
         return !empty($whitelisted) ? array_merge($whitelisted, $data) : $data;
     }
 

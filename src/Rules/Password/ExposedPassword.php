@@ -50,7 +50,7 @@ class ExposedPassword extends AbstractRule implements Rule
      */
     public function customMessage(): string
     {
-        return __("validation::messages.password.exposed", [
+        return __("ekenia::messages.password.exposed", [
             'attribute' => $this->attribute,
         ]);
     }

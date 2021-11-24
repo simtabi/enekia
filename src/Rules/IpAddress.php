@@ -59,7 +59,7 @@ class IpAddress extends AbstractRule implements Rule
     {
         $key = $this->messageKey;
         if (!empty($key)) {
-            return __("validation::messages.ip_address.$key", [
+            return __("ekenia::messages.ip_address.$key", [
                 'attribute' => $this->attribute,
             ]);
         }

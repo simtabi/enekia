@@ -135,7 +135,7 @@ class Phone extends AbstractRule implements Rule
 
     public function customMessage(): string
     {
-        return __("validation::messages.phone." . $this->messageKey, [
+        return __("ekenia::messages.phone." . $this->messageKey, [
             'attribute' => $this->attribute,
         ]);
     }

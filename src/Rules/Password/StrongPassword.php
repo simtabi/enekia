@@ -158,7 +158,7 @@ class StrongPassword extends AbstractRule implements Rule
      */
     public function customMessage(): string
     {
-        $key = 'validation::messages.password.secure';
+        $key = 'ekenia::messages.password.secure';
 
         $message = [];
 

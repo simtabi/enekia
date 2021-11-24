@@ -84,7 +84,7 @@ class HexColourCode extends AbstractRule implements Rule
      */
     public function customMessage(): string
     {
-        $key = 'validation::messages.'.$this->shortname();
+        $key = 'ekenia::messages.'.$this->shortname();
 
         $message = __(
             $key.'.base',

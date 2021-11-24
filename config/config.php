@@ -10,7 +10,7 @@ return [
         | Any words you enter here will pass validation.
         | Separate words with commas and no spaces.
         */
-        'allowed' => [
+        'whitelisted' => [
 
         ],
 
@@ -22,7 +22,7 @@ return [
         | will be merged and checked. Separate words with
         | commas and no spaces
         */
-        'disallowed' => [
+        'blacklisted' => [
 
         ],
 

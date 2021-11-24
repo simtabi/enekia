@@ -58,7 +58,7 @@ class DomainRestrictedEmail extends AbstractRule implements Rule
     public function customMessage(): string
     {
         return __(
-            'validation::messages.'.$this->shortname(),
+            'ekenia::messages.'.$this->shortname(),
             [
                 'attribute' => $this->getAttribute(),
                 'plural'    => Str::plural('domain', count($this->validDomains)),

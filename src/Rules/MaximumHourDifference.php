@@ -47,7 +47,7 @@ class MaximumHourDifference extends AbstractRule implements Rule
     public function customMessage(): string
     {
         return sprintf(
-            __('validation::messages.'.$this->shortname()),
+            __('ekenia::messages.'.$this->shortname()),
             $this->hours
         );
     }

@@ -93,7 +93,7 @@ class Language extends AbstractRule implements Rule
     {
         $key = $this->messageKey;
         if (!empty($key)) {
-            return __("validation::messages.language.$key", [
+            return __("ekenia::messages.language.$key", [
                 'attribute' => $this->attribute,
             ]);
         }

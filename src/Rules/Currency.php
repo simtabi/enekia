@@ -74,7 +74,7 @@ class Currency extends AbstractRule implements Rule
 
         $key = $this->messageKey;
         if (!empty($key)) {
-            return __("validation::messages.currency.$key", [
+            return __("ekenia::messages.currency.$key", [
                 'attribute' => $this->attribute,
                 'example'   => $this->exampleCurrencyWithSymbol(),
             ]);

@@ -50,11 +50,11 @@ class Price extends AbstractRule implements Rule
     public function customMessage(): string
     {
         if (is_null($this->decimalSign)) {
-            return __('validation::messages.'.$this->shortname() . '.base');
+            return __('ekenia::messages.'.$this->shortname() . '.base');
         }
 
         return sprintf(
-            __('validation::messages.'.$this->shortname() . '.custom_decimal'),
+            __('ekenia::messages.'.$this->shortname() . '.custom_decimal'),
             $this->decimalSign
         );
     }

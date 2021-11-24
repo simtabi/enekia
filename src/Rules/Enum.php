@@ -31,7 +31,7 @@ class Enum extends AbstractRule implements Rule
     {
         $validValues = implode(', ', $this->validValues);
 
-        return __('validation::messages.enum', [
+        return __('ekenia::messages.enum', [
             'validValues' => $validValues,
             'attribute'   => $this->attribute,
         ]);

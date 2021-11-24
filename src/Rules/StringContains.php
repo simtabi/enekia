@@ -85,7 +85,7 @@ class StringContains extends AbstractRule implements Rule
     public function customMessage(): string
     {
         $key = sprintf(
-            'validation::messages.%s.%s',
+            'ekenia::messages.%s.%s',
             $this->shortname(),
             $this->mustContainAllPhrases ? 'strict' : 'loose'
         );

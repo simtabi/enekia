@@ -74,13 +74,13 @@ class IsAStateInNorthAmerica extends AbstractRule implements Rule
         if ($this->abbrName)
         {
             return sprintf(
-                __('validation::messages.is_a_state_in_north_america.abbr'),
+                __('ekenia::messages.is_a_state_in_north_america.abbr'),
                 $this->handler->getSubject()
             );
         }elseif ($this->fullName)
         {
             return sprintf(
-                __('validation::messages.is_a_state_in_north_america.full'),
+                __('ekenia::messages.is_a_state_in_north_america.full'),
                 $this->handler->getSubject()
             );
         }

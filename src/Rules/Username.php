@@ -17,22 +17,21 @@ class Username extends AbstractRule implements Rule
     protected int $maxLength;
 
     /**
-     * The collection of allowed usernames
+     * The collection of whitelisted usernames
      */
     protected Collection $whitelisted;
 
     /**
-     * The collection of disallowed usernames
+     * The collection of blacklisted usernames
      */
     protected Collection $blacklisted;
 
-    public function __construct()
+    public function __construct(int $minLength = self::MIN_LENGTH, int $maxLength = self::MAX_LENGTH)
     {
         $this->whitelisted = collect(config('enekekia.username.allowed'));
-        $this->blacklisted = collect(config('enekekia.username.base'))->merge(config('enekekia.username.disallowed'));
+        $this->blacklisted = collect(config('enekekia.username.base'))->merge(config('enekekia.username.blacklisted'));
 
-        $this->minLength   = self::MIN_LENGTH;
-        $this->maxLength   = self::MAX_LENGTH;
+        $this->setMinLength($minLength)->setMaxLength($maxLength);
     }
 
     /**
@@ -67,27 +66,44 @@ class Username extends AbstractRule implements Rule
     public function passes($attribute, $value)
     {
 
-        $this->setAttribute($attribute)->setValue(trim(strtolower($value)));
+        $this->setAttribute($attribute)->setValue(strtolower(trim($value)));
 
+        // is too long
         if ($this->isTooLong()) {
             $this->messageKey = 'too_long';
             return false;
-        }elseif ($this->isTooShort()) {
+        }
+
+        // is too long
+        if ($this->isTooShort()) {
             $this->messageKey = 'too_short';
             return false;
-        } elseif (!$this->hasValidLength() || !$this->isFormattedCorrectly($this->value)) {
+        }
+
+        //does not have valid length
+        if (!$this->hasValidLength()) {
             $this->messageKey = 'invalid';
             return false;
-        } elseif ($this->blacklisted->contains($this->value)) {
+        }
+
+        // if not correctly formatted
+        if (!$this->isFormattedCorrectly($this->value)) {
+            $this->messageKey = 'invalid';
+            return false;
+        }
+
+        // is not allowed
+        if ($this->blacklisted->contains($value)) {
             $this->messageKey = 'blacklisted';
             return false;
         }
 
-        if ($this->whitelisted->contains($this->value)) {
+        // if whitelisted
+        if ($this->whitelisted->contains($value)) {
             return true;
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -113,17 +129,32 @@ class Username extends AbstractRule implements Rule
      */
     private function hasValidLength(): bool
     {
-        return (strlen($this->value) >= $this->minLength && strlen($this->value) <= $this->maxLength);
+        return (strlen($this->value) >= $this->minLength && strlen($this->value) <= $this->maxLength) ? true : false;
     }
 
     private function isTooLong(): bool
     {
-        return strlen($this->value) > $this->minLength;
+        return strlen($this->value) > $this->maxLength;
     }
 
     private function isTooShort(): bool
     {
-        return strlen($this->value) < $this->maxLength;
+        return strlen($this->value) < $this->minLength;
     }
 
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function customMessage(): string
+    {
+        $key = $this->messageKey;
+        if (!empty($key)) {
+            return __("enekia::messages.$this->attribute.$key", [
+                'attribute' => $this->attribute,
+            ]);
+        }
+        return '';
+    }
 }

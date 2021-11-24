@@ -65,7 +65,7 @@ class NumberParity extends AbstractRule implements Rule
     public function customMessage(): string
     {
         return __(
-            'validation::messages.'.$this->shortname().'.'.$this->mode,
+            'ekenia::messages.'.$this->shortname().'.'.$this->mode,
             [
                 'attribute' => $this->getAttribute(),
             ]

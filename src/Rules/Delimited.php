@@ -164,7 +164,7 @@ class Delimited extends AbstractRule implements Rule
             return __($this->customErrorMessages[$attribute . '.' . $rule], $data);
         }
 
-        return __('validation::messages.delimited.' . $rule, $data);
+        return __('ekenia::messages.delimited.' . $rule, $data);
     }
 
     public function customMessage()

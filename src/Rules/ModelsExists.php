@@ -41,7 +41,7 @@ class ModelsExists extends AbstractRule implements Rule
         $modelIds      = implode(', ', $this->modelIds);
         $classBasename = class_basename($this->modelClassName);
 
-        return __('validation::messages.exists_in_model', [
+        return __('ekenia::messages.exists_in_model', [
             'modelAttribute' => $this->modelAttribute,
             'modelIds'       => $modelIds,
             'attribute'      => $this->attribute,
