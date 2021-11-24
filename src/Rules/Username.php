@@ -30,6 +30,9 @@ class Username extends AbstractRule implements Rule
     {
         $this->whitelisted = collect(config('enekekia.username.allowed'));
         $this->blacklisted = collect(config('enekekia.username.base'))->merge(config('enekekia.username.disallowed'));
+
+        $this->minLength   = self::MIN_LENGTH;
+        $this->maxLength   = self::MAX_LENGTH;
     }
 
     /**
@@ -51,8 +54,8 @@ class Username extends AbstractRule implements Rule
         $this->maxLength = ($maxLength >= self::MAX_LENGTH) && ($maxLength <= self::MAX_LENGTH) ? $maxLength : self::MAX_LENGTH;
         return $this;
     }
-    
-    
+
+
 
     /**
      * Determine if the validation rule passes.
