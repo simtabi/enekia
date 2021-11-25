@@ -10,8 +10,8 @@ return [
         'blacklisted'    => 'The supplied :attribute is not allowed list and can not be used. Chose different one.',
         'too_short'      => 'The supplied :attribute is too short.',
         'too_long'       => 'The supplied :attribute is too long.',
-        'invalid'        => 'The supplied :attribute is invalid. Should contain alpha-numeric (a-z, A-Z, 0-9), 
-         underscore and minus starts with an letter (alpha) underscores and minus are not allowed at the beginning or end 
+        'invalid'        => 'The supplied :attribute is invalid. Should contain alpha-numeric (a-z, A-Z, 0-9),
+         underscore and minus starts with an letter (alpha) underscores and minus are not allowed at the beginning or end
          multiple underscores and minus are not allowed (-- or _____).',
     ],
     'html_clean'                       => 'The value :attribute contains forbidden HTML code.',
@@ -41,12 +41,12 @@ return [
     'location_coordinates'             => 'The :attribute must be a valid set of latitude and longitude coordinates, with a limit of 8 digits after a decimal point',
     'odd_number'                       => 'The value :attribute is not a valid odd number.',
     'even_number'                      => 'The value :attribute is not a valid even number.',
-    'phone'                            => [
+    'phone_number'                     => [
         'digits'             => ':attribute must be in digits only phone format',
         'e123'               => ':attribute must be in E.123 phone format',
         'e124'               => ':attribute must be in E.164 phone format',
         'nanp'               => ':attribute must be in the NANP phone format',
-        'format'             => 'Incorrect phone format for :attribute.',
+        'format'             => 'Incorrect phone number format.',
         'us_number'          => 'The :attribute must be a valid United States telephone number (10 digits in length)',
         'uk_mobile_number'   => 'The :attribute must be a valid UK mobile number',
         'dutch_phone_number' => 'The :attribute must be a valid dutch phone number',

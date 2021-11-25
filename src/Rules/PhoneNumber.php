@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Rule;
 use Simtabi\Enekia\AbstractRule;
 use Exception;
 
-class Phone extends AbstractRule implements Rule
+class PhoneNumber extends AbstractRule implements Rule
 {
     private bool $digits = false;
     private bool $e123   = false;
@@ -45,7 +45,7 @@ class Phone extends AbstractRule implements Rule
     public function passes($attribute, $value): bool
     {
 
-        $this->setAttribute($attribute);
+        $this->setAttribute($attribute)->setValue(trim($value));
 
         if ($value === null || $value === '') {
             return false;
@@ -64,8 +64,8 @@ class Phone extends AbstractRule implements Rule
             $this->messageKey = 'nanp';
             return $this->isNANP($value);
         }else{
-            $this->messageKey = 'phone';
-            return $this->isPhone($value);
+            $this->messageKey = 'format';
+            return $this->isValidFormat($value);
         }
     }
 
@@ -76,7 +76,7 @@ class Phone extends AbstractRule implements Rule
      * @param  string  $value The phone number to check
      * @return boolean        is it correct format?
      */
-    protected function isPhone($value)
+    protected function isValidFormat($value)
     {
         return $this->isE123($value) || $this->isE164($value) || $this->isNANP($value) || $this->isDigits($value);
     }
@@ -88,7 +88,7 @@ class Phone extends AbstractRule implements Rule
      */
     protected function isDigits($value)
     {
-        $conditions = [];
+        $conditions   = [];
         $conditions[] = strlen($value) >= 10;
         $conditions[] = strlen($value) <= 16;
         $conditions[] = preg_match("/[^\d]/i", $value) === 0;
@@ -112,7 +112,7 @@ class Phone extends AbstractRule implements Rule
      */
     protected function isE164($value)
     {
-        $conditions = [];
+        $conditions   = [];
         $conditions[] = strpos($value, "+") === 0;
         $conditions[] = strlen($value) >= 9;
         $conditions[] = strlen($value) <= 16;
@@ -128,15 +128,19 @@ class Phone extends AbstractRule implements Rule
      */
     protected function isNANP($value)
     {
-        $conditions = [];
+        $conditions   = [];
         $conditions[] = preg_match("/^(?:\+1|1)?\s?-?\(?\d{3}\)?(\s|-)?\d{3}-\d{4}$/i", $value) > 0;
         return (bool) array_product($conditions);
     }
 
     public function customMessage(): string
     {
-        return __("ekenia::messages.phone." . $this->messageKey, [
-            'attribute' => $this->attribute,
-        ]);
+        $key = $this->messageKey;
+        if (!empty($key)) {
+            return __("enekia::messages.phone_number.$key", [
+                'attribute' => $this->attribute,
+            ]);
+        }
+        return '';
     }
 }
