@@ -2,15 +2,10 @@
 
 namespace Simtabi\Enekia;
 
-use ReflectionClass;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\Translator;
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Str;
-use function __;
-use function class_basename;
-use function get_called_class;
 use Simtabi\Enekia\Traits\HasCurrentLocale;
 
 abstract class AbstractRule
@@ -71,7 +66,7 @@ abstract class AbstractRule
     protected function shortname(): string
     {
         return strtolower(Str::snake(class_basename(get_called_class())));
-        return strtolower((new ReflectionClass($this))->getShortName());
+        // return strtolower((new ReflectionClass($this))->getShortName());
     }
 
     /**
@@ -110,4 +105,29 @@ abstract class AbstractRule
         return new Translator($loader, self::getCurrentLocale());
     }
 
+    /**
+     * The regular expression matcher
+     *
+     * @param string $value
+     * @param string $pattern
+     * @return bool
+     */
+    protected function callPregMatcher($value, $pattern): bool
+    {
+        return preg_match($pattern, $value) === 1;
+    }
+
+    /**
+     * The generic validation function which can check for multiple validators
+     *
+     * @param string[] $functionNames
+     * @param mixed $value
+     * @return bool
+     */
+    protected function checkValidationFnsFor(array $functionNames, mixed $value): bool
+    {
+        return array_reduce($functionNames, function ($accum, $fnName) use ($value) {
+            return $accum || $this->{$fnName}($value);
+        }, false);
+    }
 }

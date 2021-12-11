@@ -1235,7 +1235,7 @@ Extended usage example to validate a long length code , omitting prefix i.e. `cc
 ```php
 use Simtabi\Enekia\Rules\HexColourCode;
 
-(new HexColourCode())->withoutPrefix()->longFormat();
+(new HexColourCode())->withoutHexPrefix()->longFormatHexCode();
 ``` 
 
 ### `Honorific`

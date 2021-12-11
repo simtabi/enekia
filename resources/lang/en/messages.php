@@ -4,7 +4,6 @@ return [
     'isin'                             => 'The :attribute must be a valid International Securities Identification Number (ISIN).',
     'iban'                             => 'The :attribute must be a valid International Bank Account Number (IBAN).',
     'bic'                              => 'The :attribute is not a valid Business Identifier Code (BIC).',
-    'hex_color'                        => 'The :attribute must be a valid hexadecimal color code.',
     'isbn'                             => ':attribute must be a valid (ISBN 10 or ISBN 13) International Standard Book Number (ISBN).',
     'username'                         => [
         'blacklisted'    => 'The supplied :attribute is not allowed list and can not be used. Chose different one.',
@@ -153,5 +152,14 @@ return [
     'credit_card'                       => [
         'basic' => 'The :attribute must be a valid credit card number.'
     ],
-
+    'color'                             => [
+        'invalid_color' => 'The :attribute is not a valid color code/name (hexadecimal, RGB, RGBA or CSS color name).',
+        'invalid_hex'   => 'The :attribute must be a valid 3 or 6 digit hexadecimal color code.',
+        'invalid_rgb'   => 'The :attribute is not a valid RGB color.',
+        'invalid_rgba'  => 'The :attribute is not a valid RGBA color.',
+        'invalid_name'  => 'The :attribute is not a valid color name.',
+        'invalid_hsl'   => 'The :attribute is not a valid HSL color.',
+        'invalid_hsla'  => 'The :attribute is not a valid HSLA color.',
+        'prefixed_hex'  => 'The :attribute must be prefixed with the "#" symbol',
+    ],
 ];
