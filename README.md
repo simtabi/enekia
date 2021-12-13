@@ -1531,6 +1531,7 @@ If you discover any security related issues, please email imani@simtabi.com inst
 * https://github.com/f9webltd/laravel-validation-rules
 * https://github.com/DivineOmega/laravel-password-exposed-validation-rule
 * https://github.com/laravel-validation-rules
+* https://github.com/Kaishiyoku/laravel-color-validation
 
 ### License
 
