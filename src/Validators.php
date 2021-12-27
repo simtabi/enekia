@@ -26,7 +26,7 @@ use Simtabi\Enekia\Validators\XmlValidator;
 use Simtabi\Enekia\Validators\Traits\WithGeneralValidatorsTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-final class EnekiaValidator
+final class Validators
 {
 
     use WithRespectValidationTrait;
