@@ -16,11 +16,12 @@ The Validation library is built to work with the Laravel Framework (>=7). It com
 
 ```php
 use Illuminate\Support\Facades\Validator;
-use Simtabi\Enekia\Rules\CardNumberBasic;
-use Simtabi\Enekia\Rules\HexColor;
-use Simtabi\Enekia\Rules\Username;
+use Simtabi\Enekia\Laravel\Rules\CreditCard\CardNumberBasic;
+use Simtabi\Enekia\Laravel\Rules\HexColor;
+use Simtabi\Enekia\Laravel\Rules\Username;
+use Enekia\EnekiaLaravelValidator;
 
-$validator = EnekiaValidator::make($request->all(), [
+$validator = EnekiaLaravelValidator::make($request->all(), [
     'color' => new Hexcolor(3), // pass rule as object
     'name' => ['required', 'min:3', 'max:20', new Username()], // combining rules works as well
 ]);
@@ -43,24 +44,24 @@ Or add your custom messages directly to the validator like [described in the doc
 It is also possible to use this library without the Laravel framework. You won't have the Laravel facades available, so make sure to use `Simtabi\Enekia\Validator` for your calls.
 
 ```php
-use Simtabi\Enekia\EnekiaValidator;
-use Simtabi\Enekia\Rules\CardNumberBasic;
+use Simtabi\Enekia\EnekiaLaravelValidator;
+use Simtabi\Enekia\Laravel\Rules\CardNumberBasic;
 use Simtabi\Enekia\Exceptions\ValidationException;
 
 // use static factory method to create laravel validator
-$validator = EnekiaValidator::make($request->all(), [
+$validator = EnekiaLaravelValidator::make($request->all(), [
     'ccnumber' => new CardNumberBasic(),
     'iban' => ['required', new Iban()],
 ]);
 
 // validate single values by calling static methods
-$result = EnekiaValidator::isHexcolor('foobar'); // false
-$result = EnekiaValidator::isHexcolor('#ccc'); // true
-$result = EnekiaValidator::isBic('foo'); // false
+$result = EnekiaLaravelValidator::isHexcolor('foobar'); // false
+$result = EnekiaLaravelValidator::isHexcolor('#ccc'); // true
+$result = EnekiaLaravelValidator::isBic('foo'); // false
 
 // assert single values
 try {
-    EnekiaValidator::assertHexcolor('foobar');
+    EnekiaLaravelValidator::assertHexcolor('foobar');
 } catch (ValidationException $e) {
     $message = $e->getMessage();
 }
@@ -74,49 +75,49 @@ The following validation rules are available with this package.
 
 The field under validation must be [Base64 encoded](https://en.wikipedia.org/wiki/Base64).
 
-    public Simtabi\Enekia\Rules\Base64::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Base64::__construct()
 
 ## Business Identifier Code (BIC)
 
 Checks for a valid [Business Identifier Code](https://en.wikipedia.org/wiki/ISO_9362) (BIC).
 
-    public Simtabi\Enekia\Rules\Bic::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Bic::__construct()
 
 ## Camel case string
 
 The field under validation must be a formated in [Camel case](https://en.wikipedia.org/wiki/Camel_case).
 
-    public Simtabi\Enekia\Rules\Camelcase::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Camelcase::__construct()
 
 ## Classless Inter-Domain Routing (CIDR) 
 
 Check if the value is a [Classless Inter-Domain Routing](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) notation (CIDR).
 
-    public Simtabi\Enekia\Rules\Cidr::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Cidr::__construct()
 
 ## CardNumberBasic
 
 The field under validation must be a valid [creditcard number](https://en.wikipedia.org/wiki/Payment_card_number).
 
-    public Simtabi\Enekia\Rules\CreditCard\CardNumberBasic::__construct()
+    public Simtabi\Enekia\Laravel\Rules\CreditCard\CardNumberBasic::__construct()
 
 ## Data URI scheme
 
 The field under validation must be a valid [Data URI](https://en.wikipedia.org/wiki/Data_URI_scheme).
 
-    public Simtabi\Enekia\Rules\DataUri::__construct()
+    public Simtabi\Enekia\Laravel\Rules\DataUri::__construct()
 
 ## Domain name 
 
 The field under validation must be a well formed [domainname](https://en.wikipedia.org/wiki/Domain_name).
 
-    public Simtabi\Enekia\Rules\Domainname::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Domainname::__construct()
 
 ## European Article Number (EAN)
 
 Checks for a valid [European Article Number](https://en.wikipedia.org/wiki/International_Article_Number).
 
-    public Simtabi\Enekia\Rules\Ean::__construct(?int $length = null)
+    public Simtabi\Enekia\Laravel\Rules\Ean::__construct(?int $length = null)
 
 #### Parameters
 
@@ -128,7 +129,7 @@ Optional integer length (8 or 13) to check only for EAN-8 or EAN-13.
 
 Checks for a valid [Global Trade Item Number](https://en.wikipedia.org/wiki/Global_Trade_Item_Number).
 
-    public Simtabi\Enekia\Rules\Gtin::__construct(?int $length = null)
+    public Simtabi\Enekia\Laravel\Rules\Gtin::__construct(?int $length = null)
 
 #### Parameters
 
@@ -140,7 +141,7 @@ Optional integer length to check only for certain types (GTIN-8, GTIN-12, GTIN-1
 
 The field under validation must be a valid [hexadecimal color code](https://en.wikipedia.org/wiki/Web_colors). 
 
-    public Simtabi\Enekia\Rules\HexColor::__construct(?int $length = null)
+    public Simtabi\Enekia\Laravel\Rules\HexColor::__construct(?int $length = null)
 
 #### Parameters
 
@@ -152,25 +153,25 @@ Optional length as integer to check only for shorthand (3 characters) or full he
 
 The field under validation must be free of any html code.
 
-    public Simtabi\Enekia\Rules\HtmlClean::__construct()
+    public Simtabi\Enekia\Laravel\Rules\HtmlClean::__construct()
 
 ## International Bank Account Number (IBAN)
 
 Checks for a valid [International Bank Account Number](https://en.wikipedia.org/wiki/International_Bank_Account_Number) (IBAN).
 
-    public Simtabi\Enekia\Rules\Iban::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Iban::__construct()
 
 ## International Mobile Equipment Identity (IMEI) 
 
 The field under validation must be a [International Mobile Equipment Identity](https://en.wikipedia.org/wiki/International_Mobile_Equipment_Identity) (IMEI).
 
-    public Simtabi\Enekia\Rules\Imei::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Imei::__construct()
 
 ## International Standard Book Number (ISBN)
 
 The field under validation must be a valid [International Standard Book Number](https://en.wikipedia.org/wiki/International_Standard_Book_Number) (ISBN).
 
-    public Simtabi\Enekia\Rules\Isbn::__construct(?int $length = null)
+    public Simtabi\Enekia\Laravel\Rules\Isbn::__construct(?int $length = null)
 
 #### Parameters
 
@@ -182,55 +183,55 @@ Optional length parameter as integer to check only for ISBN-10 or ISBN-13.
 
 Checks for a valid [International Securities Identification Number](https://en.wikipedia.org/wiki/International_Securities_Identification_Number) (ISIN).
 
-    public Simtabi\Enekia\Rules\Isin::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Isin::__construct()
 
 ## International Standard Serial Number (ISSN)
 
 Checks for a valid [International Standard Serial Number](https://en.wikipedia.org/wiki/International_Standard_Serial_Number) (ISSN).
 
-    public Simtabi\Enekia\Rules\Issn::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Issn::__construct()
 
 ## JSON Web Token (JWT)
 
 The given value must be a in format of a [JSON Web Token](https://en.wikipedia.org/wiki/JSON_Web_Token).
 
-    public Simtabi\Enekia\Rules\Jwt::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Jwt::__construct()
 
 ## Kebab case string
 
 The given value must be formated in [Kebab case](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
 
-    public Simtabi\Enekia\Rules\Kebabcase::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Kebabcase::__construct()
 
 ## Lower case string 
 
 The given value must be all lower case letters.
 
-    public Simtabi\Enekia\Rules\Lowercase::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Lowercase::__construct()
 
 ## Luhn algorithm
 
 The given value must verify against its included [Luhn algorithm](https://en.wikipedia.org/wiki/Luhn_algorithm) check digit.
 
-    public Simtabi\Enekia\Rules\Luhn::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Luhn::__construct()
 
 ## MAC address 
 
 The field under validation must be a [media access control address](https://en.wikipedia.org/wiki/MAC_address) (MAC address).
 
-    public Simtabi\Enekia\Rules\MacAddress::__construct()
+    public Simtabi\Enekia\Laravel\Rules\MacAddress::__construct()
 
 ## Media (MIME) type
 
 Checks for a valid [Mime Type](https://en.wikipedia.org/wiki/Media_type) (Media type).
 
-    public Simtabi\Enekia\Rules\MimeType::__construct()
+    public Simtabi\Enekia\Laravel\Rules\MimeType::__construct()
 
 ## Postal Code
 
 The field under validation must be a [postal code](https://en.wikipedia.org/wiki/Postal_code) of the given country.
 
-    public Simtabi\Enekia\Rules\Postalcode::__construct(string $countrycode)
+    public Simtabi\Enekia\Laravel\Rules\Postalcode::__construct(string $countrycode)
 
 #### Parameters
 
@@ -240,7 +241,7 @@ Country code in [ISO-639-1](https://en.wikipedia.org/wiki/ISO_639-1) format.
 
 ### Postal Code (static instantiation)
 
-    public static Simtabi\Enekia\Rules\Postalcode::countrycode(string $countrycode): Postalcode
+    public static Simtabi\Enekia\Laravel\Rules\Postalcode::countrycode(string $countrycode): Postalcode
 
 #### Parameters
 
@@ -250,7 +251,7 @@ Country code in [ISO-639-1](https://en.wikipedia.org/wiki/ISO_639-1) format.
 
 ### Postal Code (static instantiation with callback)
 
-    public static Simtabi\Enekia\Rules\Postalcode::resolve(callable $callback): Postalcode
+    public static Simtabi\Enekia\Laravel\Rules\Postalcode::resolve(callable $callback): Postalcode
 
 #### Parameters
 
@@ -260,7 +261,7 @@ Callback to resolve [ISO-639-1](https://en.wikipedia.org/wiki/ISO_639-1) country
 
 ### Postal Code (static instantiation with reference)
 
-    public static Simtabi\Enekia\Rules\Postalcode::reference(string $reference): Postalcode
+    public static Simtabi\Enekia\Laravel\Rules\Postalcode::reference(string $reference): Postalcode
 
 #### Parameters
 
@@ -272,313 +273,313 @@ Reference key to get [ISO-639-1](https://en.wikipedia.org/wiki/ISO_639-1) countr
 
 The field under validation must be a valid version numbers using [Semantic Versioning](https://semver.org/).
 
-    public Simtabi\Enekia\Rules\SemVer::__construct()
+    public Simtabi\Enekia\Laravel\Rules\SemVer::__construct()
 
 ## SEO-friendly short text (Slug)
 
 The field under validation must be a user- and [SEO-friendly short text](https://en.wikipedia.org/wiki/Clean_URL#Slug).
 
-    public Simtabi\Enekia\Rules\Slug::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Slug::__construct()
 
 ## Snake case string
 
 The field under validation must formated as [Snake case](https://en.wikipedia.org/wiki/Snake_case) text.
 
-    public Simtabi\Enekia\Rules\Snakecase::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Snakecase::__construct()
 
 ## Title case string
 
 The field under validation must formated in [Title case](https://en.wikipedia.org/wiki/Title_case).
 
-    public Simtabi\Enekia\Rules\Titlecase::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Titlecase::__construct()
 
 ## Universally Unique Lexicographically Sortable Identifier (ULID)
 
 The field under validation must be a valid [Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec).
 
-    public Simtabi\Enekia\Rules\Ulid::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Ulid::__construct()
 
 ## Upper case string
 
 The field under validation must be all upper case.
 
-    public Simtabi\Enekia\Rules\Uppercase::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Uppercase::__construct()
 
 ## Username
 
 The field under validation must be a valid username. Consisting of alpha-numeric characters, underscores, minus and starting with a alphabetic character. Multiple underscore and minus chars are not allowed. Underscore and minus chars are not allowed at the beginning or end.
 
-    public Simtabi\Enekia\Rules\Username::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Username::__construct()
 
 ## LocationCoordinates
 
 Requires that the given value is a comma-separated set of latitude and longitude coordinates
 
-    public Simtabi\Enekia\Rules\Localization\LocationCoordinates::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Localization\LocationCoordinates::__construct()
 
 ## EncodedImage
 
 Requires that the given value is a base64-encoded image of a given mime types - see class for details
 
-    public Simtabi\Enekia\Rules\EncodedImage::__construct()
+    public Simtabi\Enekia\Laravel\Rules\EncodedImage::__construct()
 
 ## CitizenshipIdentificationNumber
 
 Requires that the given value is a base64-encoded image of a given mime types - see class for details
 
-    public Simtabi\Enekia\Rules\CitizenshipIdentificationNumber::__construct()
+    public Simtabi\Enekia\Laravel\Rules\CitizenshipIdentificationNumber::__construct()
 
 ## OddNumber
 
 Requires that the given value is an odd number (decimals are first converted using intval)
 
-    public Simtabi\Enekia\Rules\OddNumber::__construct()
+    public Simtabi\Enekia\Laravel\Rules\OddNumber::__construct()
 
 ## EvenNumber
 
 Requires that the given value is an even number (decimals are first converted using intval)
 
-    public Simtabi\Enekia\Rules\EvenNumber::__construct()
+    public Simtabi\Enekia\Laravel\Rules\EvenNumber::__construct()
 
 ## FileExists
 
 Requires that the given value is a path to an existing file - see class for details
 
-    public Simtabi\Enekia\Rules\FileExists::__construct()
+    public Simtabi\Enekia\Laravel\Rules\FileExists::__construct()
 
 ## DisposableEmail
 
 Requires the presence of an email address which is not disposable. By default, if the API fails to load, the email will be accepted. However, you can override this by adding a boolean parameter e.g. new DisposableEmail(true).
 
-    public Simtabi\Enekia\Rules\DisposableEmail::__construct()
+    public Simtabi\Enekia\Laravel\Rules\DisposableEmail::__construct()
 
 ## Decimal
 
 Requires that the given value is a decimal with an appropriate format - see class for details
 
-    public Simtabi\Enekia\Rules\Decimal::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Decimal::__construct()
 
 ## Equals
 
 Requires that the given value is equal to another given value
 
-    public Simtabi\Enekia\Rules\Equals::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Equals::__construct()
 
 ## EndsWith
 
 Requires that the given value ends with a given string - see class for details
 
-    public Simtabi\Enekia\Rules\EndsWith::__construct()
+    public Simtabi\Enekia\Laravel\Rules\EndsWith::__construct()
 
 ## NoWhitespace
 
 Requires that the given value not include any whitespace characters
 
-    public Simtabi\Enekia\Rules\NoWhitespace::__construct()
+    public Simtabi\Enekia\Laravel\Rules\NoWhitespace::__construct()
 
 ## DoesNotExist
 
 Requires that the given value is not present in a given database table / column - see class for details
 
-    public Simtabi\Enekia\Rules\DoesNotExist::__construct()
+    public Simtabi\Enekia\Laravel\Rules\DoesNotExist::__construct()
 
 ## CurrencySymbol
 
 Requires the presence of a monetary figure e.g $72.33 - see class for details
 
-    public Simtabi\Enekia\Rules\CurrencySymbol::__construct()
+    public Simtabi\Enekia\Laravel\Rules\CurrencySymbol::__construct()
 
 ## Domain
 
 Requires that the given value be a domain e.g. google.com, www.google.com
 
-    public Simtabi\Enekia\Rules\Domain::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Domain::__construct()
 
 ## MaxWords
 
 Requires that the given value cannot contain more words than specified
 
-    public Simtabi\Enekia\Rules\MaxWords::__construct()
+    public Simtabi\Enekia\Laravel\Rules\MaxWords::__construct()
 
 ## ExcludesHtml
 
 Requires that the given value doesn't contain Html tags
 
-    public Simtabi\Enekia\Rules\ExcludesHtml::__construct()
+    public Simtabi\Enekia\Laravel\Rules\ExcludesHtml::__construct()
 
 ## IncludesHtml
 
 Requires that the given value contains Html tags
 
-    public Simtabi\Enekia\Rules\IncludesHtml::__construct()
+    public Simtabi\Enekia\Laravel\Rules\IncludesHtml::__construct()
 
 ## StringContains
 
 Requires that the given value contains the given values
 
-    public Simtabi\Enekia\Rules\StringContains::__construct()
+    public Simtabi\Enekia\Laravel\Rules\StringContains::__construct()
 
 ## Base64EncodedString
 
 Requires that the given value is a base64 encoded string
 
-    public Simtabi\Enekia\Rules\Base64EncodedString::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Base64EncodedString::__construct()
 
 ## Coordinate
 
 Requires that the given value has valid coordinates
 
-    public Simtabi\Enekia\Rules\Coordinate::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Coordinate::__construct()
 
 ## DomainRestrictedEmail
 
 Requires that the given value is a valid domain restricted email
 
-    public Simtabi\Enekia\Rules\DomainRestrictedEmail::__construct()
+    public Simtabi\Enekia\Laravel\Rules\DomainRestrictedEmail::__construct()
 
 ## HexColourCode
 
 Requires that the given value is a valid hex color code
 
-    public Simtabi\Enekia\Rules\HexColourCode::__construct()
+    public Simtabi\Enekia\Laravel\Rules\HexColourCode::__construct()
 
 ## NumberParity
 
 Requires that the given value has valid parity
 
-    public Simtabi\Enekia\Rules\NumberParity::__construct()
+    public Simtabi\Enekia\Laravel\Rules\NumberParity::__construct()
 
 ## Salutation
 
 Requires that the given value is a valid salutation
 
-    public Simtabi\Enekia\Rules\Salutation::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Salutation::__construct()
 
 
 ## VatNumber
 
 Requires that the given value is a valid VAT number
 
-    public Simtabi\Enekia\Rules\VatNumber::__construct()
+    public Simtabi\Enekia\Laravel\Rules\VatNumber::__construct()
 
 
 ## Contains
 
 Requires that the given value contains a given value
 
-    public Simtabi\Enekia\Rules\Contains::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Contains::__construct()
 
 
 ## DateAfterOrEqual
 
 Requires that the given value is a date and it's after or equal
 
-    public Simtabi\Enekia\Rules\DateAfterOrEqual::__construct()
+    public Simtabi\Enekia\Laravel\Rules\DateAfterOrEqual::__construct()
 
 
 ## DateBeforeOrEqual
 
 Requires that the given value is a date and it's before or equal
 
-    public Simtabi\Enekia\Rules\DateBeforeOrEqual::__construct()
+    public Simtabi\Enekia\Laravel\Rules\DateBeforeOrEqual::__construct()
 
 
 ## DateHasSpecificMinutes
 
 Requires that the given value is a date and has specific minutes
 
-    public Simtabi\Enekia\Rules\DateHasSpecificMinutes::__construct()
+    public Simtabi\Enekia\Laravel\Rules\DateHasSpecificMinutes::__construct()
 
 
 ## Hostname
 
 Requires that the given value is a valid hostname i.e google.com
 
-    public Simtabi\Enekia\Rules\Hostname::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Hostname::__construct()
 
 
 ## Interval
 
 Requires that the given value is a valid interval, i.e. PT30S.
 
-    public Simtabi\Enekia\Rules\Interval::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Interval::__construct()
 
 
 ## MaximumHourDifference
 
 Requires that the given value has a maximum hour difference
 
-    public Simtabi\Enekia\Rules\MaximumHourDifference::__construct()
+    public Simtabi\Enekia\Laravel\Rules\MaximumHourDifference::__construct()
 
 
 ## NotContains
 
 Requires that the given value does not contain a given value
 
-    public Simtabi\Enekia\Rules\NotContains::__construct()
+    public Simtabi\Enekia\Laravel\Rules\NotContains::__construct()
 
 
 ## NotEndsWith
 
 Requires that the given value does not end with a given value
 
-    public Simtabi\Enekia\Rules\NotEndsWith::__construct()
+    public Simtabi\Enekia\Laravel\Rules\NotEndsWith::__construct()
 
 
 ## NotStartsWith
 
 Requires that the given value does not start with a given value
 
-    public Simtabi\Enekia\Rules\NotStartsWith::__construct()
+    public Simtabi\Enekia\Laravel\Rules\NotStartsWith::__construct()
 
 
 ## PositiveInterval
 
 Requires that the given value is a positive interval
 
-    public Simtabi\Enekia\Rules\PositiveInterval::__construct()
+    public Simtabi\Enekia\Laravel\Rules\PositiveInterval::__construct()
 
 
 ## Price
 
 Requires that the given value is a valid price
 
-    public Simtabi\Enekia\Rules\Price::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Price::__construct()
 
 
 ## SecureUrl
 
 Requires that the given value is a valid secure url
 
-    public Simtabi\Enekia\Rules\SecureUrl::__construct()
+    public Simtabi\Enekia\Laravel\Rules\SecureUrl::__construct()
 
 
 ## Phone
 
 Requires that the given value is a valid phone number
 
-    public Simtabi\Enekia\Rules\Phone::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Phone::__construct()
 
 
 ## PostalCodeDutch
 
 Requires that the given value is a valid dutch postal code
 
-    public Simtabi\Enekia\Rules\PostalCodeDutch::__construct()
+    public Simtabi\Enekia\Laravel\Rules\PostalCodeDutch::__construct()
 
 
 ## Timezone
 
 Requires that the given value is a valid timezone
 
-    public Simtabi\Enekia\Rules\Localization\Timezone::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Localization\Timezone::__construct()
 
 
 ## Language
 
 Requires that the given value is a valid language using iso codes, nd or names
 
-    public Simtabi\Enekia\Rules\Localization\Language::__construct()
+    public Simtabi\Enekia\Laravel\Rules\Localization\Language::__construct()
 
 
 # IP Address
@@ -590,7 +591,7 @@ Validates an ip address is either public or private. Supports ipv4 & ipv6.
 Validate an ip address is a public address.
 
 ```php
-use Simtabi\Enekia\Rules\IpAddress;
+use Simtabi\Enekia\Laravel\Rules\IpAddress;
 
 $request->validate([
     'ip' => ['required', new PublicIpAddress],
@@ -600,7 +601,7 @@ $request->validate([
 Validate an ip address is a private address.
 
 ```php
-use Simtabi\Enekia\Rules\IpAddress;
+use Simtabi\Enekia\Laravel\Rules\IpAddress;
 
 $request->validate([
     'ip' => ['required', new PrivateIpAddress],
@@ -614,7 +615,7 @@ $request->validate([
 ### Usage
 
 ```php
-use Simtabi\Enekia\Rules\Subdomain;
+use Simtabi\Enekia\Laravel\Rules\Subdomain;
 
 $request->validate([
     'domain' => ['required', new Subdomain],
@@ -628,7 +629,7 @@ $request->validate([
 The following code snippet shows an example of how to use the offensive validation rule.
 
 ```php
-use Simtabi\Enekia\Rules\IsOffensiveWord;
+use Simtabi\Enekia\Laravel\Rules\IsOffensiveWord;
 
 $request->validate([
     'username' => ['required', new Offensive],
@@ -643,7 +644,7 @@ $request->validate([
 The following code snippet shows an example of how to use the north america state validation rule.
 
 ```php
-use Simtabi\Enekia\Rules\Localization\IsAStateInNorthAmerica;
+use Simtabi\Enekia\Laravel\Rules\Localization\IsAStateInNorthAmerica;
 
 $request->validate([
     'state' => ['required', new IsAStateInNorthAmerica('US')->doAbbreviatedName()],
@@ -664,7 +665,7 @@ By default the rule assumes that you want to validate using `id` attribute. In t
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\ModelsExists;
+use Simtabi\Enekia\Laravel\Rules\ModelsExists;
 
 public function rules()
 {
@@ -680,7 +681,7 @@ You can also pass an attribute name as the second argument. In the example below
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\ModelsExists;
+use Simtabi\Enekia\Laravel\Rules\ModelsExists;
 
 public function rules()
 {
@@ -715,7 +716,7 @@ This validation rule will pass if the id of the logged in user matches the `user
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\Authorized;
+use Simtabi\Enekia\Laravel\Rules\Authorized;
 
 public function rules()
 {
@@ -748,7 +749,7 @@ Determine if the field under validation is a valid [2 letter ISO3166 country cod
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\Localization\Country;
+use Simtabi\Enekia\Laravel\Rules\Localization\Country;
 
 public function rules()
 {
@@ -763,7 +764,7 @@ If you want to validate a nullable country code field, you can call the `nullabl
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\Localization\Country;
+use Simtabi\Enekia\Laravel\Rules\Localization\Country;
 
 public function rules()
 {
@@ -794,7 +795,7 @@ The `Enum` rule can be used like this:
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\Enum;
+use Simtabi\Enekia\Laravel\Rules\Enum;
 
 public function rules()
 {
@@ -816,7 +817,7 @@ Determine if the field under validation is a valid [3 letter ISO4217 currency co
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\Currency;
+use Simtabi\Enekia\Laravel\Rules\Currency;
 
 public function rules()
 {
@@ -832,7 +833,7 @@ If you want to validate a nullable currency field, simple do not let it be requi
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\Currency;
+use Simtabi\Enekia\Laravel\Rules\Currency;
 
 public function rules()
 {
@@ -852,7 +853,7 @@ Here's an example where we are going to validate a string containing comma separ
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\Delimited;
+use Simtabi\Enekia\Laravel\Rules\Delimited;
 
 public function rules()
 {
@@ -945,7 +946,7 @@ The constructor of the validator accepts a custom error messages array as second
 ```php
 // in a `FormRequest`
 
-use Simtabi\Enekia\Rules\Delimited;
+use Simtabi\Enekia\Laravel\Rules\Delimited;
 
 public function rules()
 {
@@ -971,8 +972,8 @@ If the defaults are too strict (or not strict enough), you can optionally specif
 of offensive words and custom whitelist. Below is an example of using a custom blacklist and whitelist.
 
 ```php
-use Simtabi\Enekia\Rules\IsOffensiveWord;
-use Simtabi\Enekia\Support\OffensiveWordChecker;
+use Simtabi\Enekia\Laravel\Rules\IsOffensiveWord;
+use Simtabi\Enekia\Helpers\OffensiveWordChecker;
 
 $blacklist = ['moist', 'stinky', 'poo'];
 $whitelist = ['poop'];
@@ -1154,7 +1155,7 @@ legit, I'm currently offering an easy to use (paid) service for that.
 As discussed in the official [Laravel documentation](https://laravel.com/docs/master/validation#using-rule-objects), import the required rule whenever required:
 
 ```php
-use Simtabi\Enekia\Rules\TitleCase;
+use Simtabi\Enekia\Laravel\Rules\TitleCase;
 
 // ...
 
@@ -1197,7 +1198,7 @@ Ensure the passed email in question is part of the provided whitelist of domains
 For instance, to ensure the given email domain is `f9web.co.uk` or `laravel.com`:
 
 ```php
-use Simtabi\Enekia\Rules\DomainRestrictedEmail;
+use Simtabi\Enekia\Laravel\Rules\DomainRestrictedEmail;
 
 // ...
 
@@ -1225,7 +1226,7 @@ Ensure the passed attribute is a valid hex colour code (three of six characters 
 Minimum usage example to validate a short length code with the prefix i.e. `#fff`:
 
 ```php
-use Simtabi\Enekia\Rules\HexColourCode;
+use Simtabi\Enekia\Laravel\Rules\HexColourCode;
 
 (new HexColourCode());
 ``` 
@@ -1233,7 +1234,7 @@ use Simtabi\Enekia\Rules\HexColourCode;
 Extended usage example to validate a long length code , omitting prefix i.e. `cc0000`:
 
 ```php
-use Simtabi\Enekia\Rules\HexColourCode;
+use Simtabi\Enekia\Laravel\Rules\HexColourCode;
 
 (new HexColourCode())->withoutHexPrefix()->longFormatHexCode();
 ``` 
@@ -1257,7 +1258,7 @@ Validate the number parity.
 An odd number:
 
 ```php
-use Simtabi\Enekia\Rules\NumberParity;
+use Simtabi\Enekia\Laravel\Rules\NumberParity;
 
 // ...
 
@@ -1272,7 +1273,7 @@ $request->validate([
 An even number:
 
 ```php
-use Simtabi\Enekia\Rules\NumberParity;
+use Simtabi\Enekia\Laravel\Rules\NumberParity;
 
 // ...
 
@@ -1291,7 +1292,7 @@ Ensure the given attribute contains the provided strings.
 Minimum usage example to ensure the attribute in question contains the string `php` or `laravel`:
 
 ```php
-use Simtabi\Enekia\Rules\StringContains;
+use Simtabi\Enekia\Laravel\Rules\StringContains;
 
 // ...
 
@@ -1309,7 +1310,7 @@ $request->validate([
 Optionally force the string to contain *all* provided phrases:
 
 ```php
-use Simtabi\Enekia\Rules\StringContains;
+use Simtabi\Enekia\Laravel\Rules\StringContains;
 
 // ...
 
@@ -1336,7 +1337,7 @@ Minimum usage example to ensure the attribute:
 - contains at least one number
 
 ```php
-use Simtabi\Enekia\Rules\Password\StrongPassword;
+use Simtabi\Enekia\Laravel\Rules\Password\StrongPassword;
 
 // ...
 
@@ -1351,7 +1352,7 @@ $request->validate([
 Additional methods are available.
 
 ```php
-use Simtabi\Enekia\Rules\Password\StrongPassword;
+use Simtabi\Enekia\Laravel\Rules\Password\StrongPassword;
 
 // ...
 
@@ -1397,10 +1398,10 @@ Ensure the provided attribute is entirely uppercase.
 
 namespace App\Http\Requests;
 
-use Simtabi\Enekia\Rules\CreditCard\CardCvc;
-use Simtabi\Enekia\Rules\CreditCard\CardNumber;
-use Simtabi\Enekia\Rules\CreditCard\CardExpirationYear;
-use Simtabi\Enekia\Rules\CreditCard\CardExpirationMonth;
+use Simtabi\Enekia\Laravel\Rules\CreditCard\CardCvc;
+use Simtabi\Enekia\Laravel\Rules\CreditCard\CardNumber;
+use Simtabi\Enekia\Laravel\Rules\CreditCard\CardExpirationYear;
+use Simtabi\Enekia\Laravel\Rules\CreditCard\CardExpirationMonth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreditCardRequest extends FormRequest
@@ -1428,13 +1429,13 @@ class CreditCardRequest extends FormRequest
 ```php
 $request->validate(
     ['card_number' => '37873449367100'],
-    ['card_number' => new Simtabi\Enekia\Rules\CreditCard\CardNumber]
+    ['card_number' => new Simtabi\Enekia\Laravel\Rules\CreditCard\CardNumber]
 );
 ```
 #### Directly
 
 ```php
-(new Simtabi\Enekia\Rules\CreditCard\Cards\Visa)
+(new Simtabi\Enekia\Laravel\Rules\CreditCard\Cards\Visa)
     ->setCardNumber('4012888888881881')
     ->isValidCardNumber()
 ```
@@ -1447,31 +1448,31 @@ $request->validate(
 // CardExpirationYear requires card expiration month
 $request->validate(
     ['expiration_year' => '2017'],
-    ['expiration_year' => ['required', new Simtabi\Enekia\Rules\CreditCard\CardExpirationYear($request->get('expiration_month'))]]
+    ['expiration_year' => ['required', new Simtabi\Enekia\Laravel\Rules\CreditCard\CardExpirationYear($request->get('expiration_month'))]]
 );
 
 // CardExpirationMonth requires card expiration year
 $request->validate(
     ['expiration_month' => '11'],
-    ['expiration_month' => ['required', new Simtabi\Enekia\Rules\CreditCard\CardExpirationMonth($request->get('expiration_year'))]]
+    ['expiration_month' => ['required', new Simtabi\Enekia\Laravel\Rules\CreditCard\CardExpirationMonth($request->get('expiration_year'))]]
 );
 
 // CardExpirationDate requires date format
 $request->validate(
     ['expiration_date' => '02-18'],
-    ['expiration_date' => ['required', new Simtabi\Enekia\Rules\CreditCard\CardExpirationDate('MM-YY')]]
+    ['expiration_date' => ['required', new Simtabi\Enekia\Laravel\Rules\CreditCard\CardExpirationDate('MM-YY')]]
 );
 ```
 #### Directly
 
 ```php
-Simtabi\Enekia\Rules\CreditCard\Cards\ExpirationDateValidator(
+Simtabi\Enekia\Laravel\Rules\CreditCard\Cards\ExpirationDateValidator(
     $expiration_year,
     $expiration_month
 )->isValid();
 
 // Or static
-Simtabi\Enekia\Rules\CreditCard\Cards\ExpirationDateValidator::validate(
+Simtabi\Enekia\Laravel\Rules\CreditCard\Cards\ExpirationDateValidator::validate(
     $expiration_year,
     $expiration_month
 );
@@ -1485,14 +1486,14 @@ Simtabi\Enekia\Rules\CreditCard\Cards\ExpirationDateValidator::validate(
 // CardCvc requires card number to determine allowed cvc length
 $request->validate(
     ['cvc' => '123'],
-    ['cvc' => new Simtabi\Enekia\Rules\CreditCard\CardCvc($request->get('card_number'))]
+    ['cvc' => new Simtabi\Enekia\Laravel\Rules\CreditCard\CardCvc($request->get('card_number'))]
 );
 
 ```
 #### Directly
 
 ```php
-Simtabi\Enekia\Rules\CreditCard\Cards\Card::isValidCvcLength($cvc);
+Simtabi\Enekia\Laravel\Rules\CreditCard\Cards\Card::isValidCvcLength($cvc);
 ```
 
 
