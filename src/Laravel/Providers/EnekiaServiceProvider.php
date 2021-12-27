@@ -11,7 +11,7 @@ class EnekiaServiceProvider extends ServiceProvider
 {
 
     private const PACKAGE_NAME    = 'enekia';
-    private const PACKAGE_PATH    = __DIR__ . '/../../';
+    private const PACKAGE_PATH    = __DIR__ . '/../../../';
 
     public function register()
     {
