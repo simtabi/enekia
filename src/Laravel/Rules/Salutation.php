@@ -21,7 +21,7 @@ class Salutation extends AbstractRule implements Rule
 
         return in_array(
             str_replace('.', '', strtolower($value)),
-            array_values(pheg()->data()->getSalutations())
+            array_values(pheg()->supportData()->getSalutations())
         );
     }
 }
