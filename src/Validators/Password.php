@@ -2,13 +2,15 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 use ZxcvbnPhp\Zxcvbn;
 
-class PasswordValidator
+class Password
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     /****
      * Check for complex password using regular expressions

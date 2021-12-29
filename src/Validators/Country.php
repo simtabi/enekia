@@ -2,12 +2,15 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Simtabi\Pheg\Toolbox\Countries\Countries;
 
-class CountryValidator
+class Country
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     public function isLanguage($value): bool
     {

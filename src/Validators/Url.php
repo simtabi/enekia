@@ -2,12 +2,14 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class UrlValidator
+class Url
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     public function isUrl($value): bool
     {

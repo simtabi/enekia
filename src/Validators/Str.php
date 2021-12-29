@@ -2,12 +2,14 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class StringValidator
+class Str
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     /***
      * Function is_title

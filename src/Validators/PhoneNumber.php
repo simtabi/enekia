@@ -9,14 +9,16 @@ use libphonenumber\PhoneNumberToCarrierMapper;
 use libphonenumber\PhoneNumberToTimeZonesMapper;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\ShortNumberInfo;
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Pheg\Core\CoreTools;
 use Simtabi\Pheg\Core\Services\Translator;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class PhoneNumberValidator
+class PhoneNumber
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     public function isValidCallingCode($value): bool
     {

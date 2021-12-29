@@ -3,6 +3,7 @@
 namespace Simtabi\Enekia\Validators;
 
 use DOMDocument;
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Pheg\Core\Exceptions\PhegException;
 use function is_string;
 use LibXMLError;
@@ -13,8 +14,10 @@ use LibXMLError;
  * @package Hyperized\Xml
  * Based on: http://stackoverflow.com/a/30058598/1757763
  */
-final class XmlValidator
+final class Xml
 {
+
+    use WithInstanceTrait;
 
     public const UTF_8    = 'utf-8';
     public const VERSION  = '1.0';
@@ -38,10 +41,6 @@ final class XmlValidator
      * @var string
      */
     private $encoding = self::UTF_8;
-
-    public function __construct()
-    {
-    }
 
     public function isValid(string $xmlStringOrFilePath, ?string $xsdFilePath = null, $fromString = false): bool
     {

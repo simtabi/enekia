@@ -2,13 +2,14 @@
 
 namespace Simtabi\Enekia\Validators;
 
-use Simtabi\Pheg\Toolbox\Arr;
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class ArrayValidator
+class Arr
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     /**
      * Determines if an array is associative.

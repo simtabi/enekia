@@ -2,25 +2,20 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class NumberValidator
+class Vars
 {
 
     use WithRespectValidationTrait;
-
-    public function isOddNumber(int $number): bool
-    {
-        return ($number % 2 == 0) ? true : false;
-    }
+    use WithInstanceTrait;
 
     public function isNotANumber(int $number): bool
     {
-        $number = !empty($number) && (
-            is_integer($number) || is_numeric($number) || is_float($number)
-        ) ? (float) $number : 0;
+        $number = !empty($number) && (is_integer($number) || is_numeric($number) || is_float($number)) ? (float) $number : 0;
 
-        return ($number === 0) ? true : false;
+        return $number === 0;
     }
 
     /**

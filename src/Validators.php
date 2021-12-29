@@ -3,26 +3,25 @@
 namespace Simtabi\Enekia;
 
 use Carbon\Carbon;
-use Simtabi\Enekia\Validators\AgeValidator;
-use Simtabi\Enekia\Validators\ArrayValidator;
-use Simtabi\Enekia\Validators\ColorValidator;
-use Simtabi\Enekia\Validators\CountryValidator;
-use Simtabi\Enekia\Validators\TimeValidator;
-use Simtabi\Enekia\Validators\FileSystemValidator;
-use Simtabi\Enekia\Validators\EmailValidator;
-use Simtabi\Enekia\Validators\HtmlValidator;
-use Simtabi\Enekia\Validators\IpAddressValidator;
-use Simtabi\Enekia\Validators\JsonValidator;
-use Simtabi\Enekia\Validators\NumberValidator;
-use Simtabi\Enekia\Validators\PasswordValidator;
-use Simtabi\Enekia\Validators\PhoneNumberValidator;
-use Simtabi\Enekia\Validators\PostalCodeValidator;
-use Simtabi\Enekia\Validators\StringValidator;
-use Simtabi\Enekia\Validators\TypeValidator;
-use Simtabi\Enekia\Validators\UrlValidator;
-use Simtabi\Enekia\Validators\UsernameValidator;
-use Simtabi\Enekia\Validators\VersionNumberValidator;
-use Simtabi\Enekia\Validators\XmlValidator;
+use Simtabi\Enekia\Validators\Age;
+use Simtabi\Enekia\Validators\Arr;
+use Simtabi\Enekia\Validators\Colors;
+use Simtabi\Enekia\Validators\Country;
+use Simtabi\Enekia\Validators\Time;
+use Simtabi\Enekia\Validators\File;
+use Simtabi\Enekia\Validators\Email;
+use Simtabi\Enekia\Validators\Html;
+use Simtabi\Enekia\Validators\IpAddress;
+use Simtabi\Enekia\Validators\Vars;
+use Simtabi\Enekia\Validators\Password;
+use Simtabi\Enekia\Validators\PhoneNumber;
+use Simtabi\Enekia\Validators\PostalCode;
+use Simtabi\Enekia\Validators\Str;
+use Simtabi\Enekia\Validators\DataType;
+use Simtabi\Enekia\Validators\Url;
+use Simtabi\Enekia\Validators\Username;
+use Simtabi\Enekia\Validators\VersionNumber;
+use Simtabi\Enekia\Validators\Xml;
 use Simtabi\Enekia\Validators\Traits\WithGeneralValidatorsTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
@@ -42,99 +41,99 @@ final class Validators
         return new self();
     }
 
-    public function age(): AgeValidator
+    public function age(): Age
     {
-        return new AgeValidator();
+        return Age::invoke();
     }
 
-    public function array(): ArrayValidator
+    public function arr(): Arr
     {
-        return new ArrayValidator();
+        return Arr::invoke();
     }
 
-    public function color(): ColorValidator
+    public function colors(): Colors
     {
-        return new ColorValidator();
+        return Colors::invoke();
     }
 
-    public function country(): CountryValidator
+    public function country(): Country
     {
-        return new CountryValidator();
+        return Country::invoke();
     }
 
-    public function email(): EmailValidator
+    public function email(): Email
     {
-        return new EmailValidator();
+        return Email::invoke();
     }
 
-    public function fileSystem(): FileSystemValidator
+    public function file(): File
     {
-        return new FileSystemValidator();
+        return File::invoke();
     }
 
-    public function html(): HtmlValidator
+    public function html(): Html
     {
-        return new HtmlValidator();
+        return Html::invoke();
     }
 
-    public function ipAddress(): IpAddressValidator
+    public function ipAddress(): IpAddress
     {
-        return new IpAddressValidator();
+        return IpAddress::invoke();
     }
 
-    public function number(): NumberValidator
+    public function vars(): Vars
     {
-        return new NumberValidator();
+        return Vars::invoke();
     }
 
-    public function password(): PasswordValidator
+    public function password(): Password
     {
-        return new PasswordValidator();
+        return Password::invoke();
     }
 
-    public function phoneNumber(): PhoneNumberValidator
+    public function phoneNumber(): PhoneNumber
     {
-        return new PhoneNumberValidator();
+        return PhoneNumber::invoke();
     }
 
-    public function postalCode(): PostalCodeValidator
+    public function postalCode(): PostalCode
     {
-        return new PostalCodeValidator();
+        return PostalCode::invoke();
     }
 
-    public function string(): StringValidator
+    public function str(): Str
     {
-        return new StringValidator();
+        return Str::invoke();
     }
 
-    public function time(Carbon $carbon, $timezone = null): TimeValidator
+    public function time(Carbon $carbon, $timezone = null): Time
     {
-        return new TimeValidator($carbon, $timezone);
+        return Time::invoke($carbon, $timezone);
     }
 
-    public function dataType(): TypeValidator
+    public function dataType(): DataType
     {
-        return TypeValidator::invoke();
+        return DataType::invoke();
     }
 
-    public function url(): UrlValidator
+    public function url(): Url
     {
-        return new UrlValidator();
+        return Url::invoke();
     }
 
-    public function username(): UsernameValidator
+    public function username(): Username
     {
-        return new UsernameValidator();
+        return Username::invoke();
     }
 
-    public function versionNumber(): VersionNumberValidator
+    public function versionNumber(): VersionNumber
     {
-        return new VersionNumberValidator();
+        return VersionNumber::invoke();
     }
 
-    public function xml(): XmlValidator
+    public function xml(): Xml
     {
-        return new XmlValidator();
+        return Xml::invoke();
     }
 
 }

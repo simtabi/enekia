@@ -2,12 +2,14 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class UsernameValidator
+class Username
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     public function isUsername($username, $minLength = 5, $maxLength = 32, $startWithAlphabets = false): bool
     {

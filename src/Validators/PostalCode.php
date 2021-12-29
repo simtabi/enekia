@@ -2,12 +2,14 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class PostalCodeValidator
+class PostalCode
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     public function isPostalCode($value, $locale = 'US'): bool
     {

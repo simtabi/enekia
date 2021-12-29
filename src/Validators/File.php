@@ -2,12 +2,14 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class FileSystemValidator
+class File
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     /**
      * Checks if image has JPEG/JPG format

@@ -2,12 +2,14 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class VersionNumberValidator
+class VersionNumber
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     /**
      * Version control regex validation

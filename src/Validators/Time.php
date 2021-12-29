@@ -3,12 +3,15 @@
 namespace Simtabi\Enekia\Validators;
 
 use Carbon\Carbon;
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Simtabi\Pheg\Pheg;
 
-class TimeValidator
+class Time
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     /**
      * The Carbon time instance.
@@ -31,6 +34,8 @@ class TimeValidator
      */
     protected $timezone;
 
+    private Pheg $pheg;
+
     /**
      * Create a new Parser instance.
      *
@@ -38,14 +43,18 @@ class TimeValidator
      * @param string $timezone
      * @return void
      */
-    public function __construct(Carbon $carbon, $timezone = null)
+    private function __construct(Carbon $carbon, $timezone = null)
     {
         $this->carbonTime = $carbon;
         $this->timezone   = $timezone;
+        $this->pheg       = Pheg::getInstance();
         $this->setDifference($carbon);
     }
 
-
+    public static function invoke(Carbon $carbon, $timezone = null): self
+    {
+        return new self($carbon, $timezone);
+    }
 
     /**
      * Determine if the difference is more than a minute.
@@ -104,103 +113,64 @@ class TimeValidator
             return false;
         }
 
-        switch($format) {
-            case 'YYYY/MM/DD':
-            case 'YYYY-MM-DD':
-                list($y, $m, $d) = preg_split('/[-\.\/ ]/', $value);
-                break;
+        $format = match ($format) {
+            'YYYY/MM/DD', 'YYYY-MM-DD' => 1,
+            'YYYY/DD/MM', 'YYYY-DD-MM' => 2,
+            'DD/MM/YYYY', 'DD-MM-YYYY' => 3,
+            'MM/DD/YYYY', 'MM-DD-YYYY' => 4,
+            'YYYYMMDD'                 => 5,
+            'YYYYDDMM'                 => 6,
+        };
 
-            case 'YYYY/DD/MM':
-            case 'YYYY-DD-MM':
-                list($y, $d, $m) = preg_split('/[-\.\/ ]/', $value);
-                break;
-
-            case 'DD-MM-YYYY':
-            case 'DD/MM/YYYY':
-                list($d, $m, $y) = preg_split('/[-\.\/ ]/', $value);
-                break;
-
-            case 'MM-DD-YYYY':
-            case 'MM/DD/YYYY':
-                list($m, $d, $y) = preg_split('/[-\.\/ ]/', $value);
-                break;
-
-            case 'YYYYMMDD':
-                $y = substr($value, 0, 4);
-                $m = substr($value, 4, 2);
-                $d = substr($value, 6, 2);
-                break;
-
-            case 'YYYYDDMM':
-                $y = substr($value, 0, 4);
-                $d = substr($value, 4, 2);
-                $m = substr($value, 6, 2);
-                break;
-
-            default:
-                return false;
-                break;
-        }
-        if (checkdate($m, $d, $y)){
-            return true;
+        if ($format === 1) {
+            list($y, $m, $d) = preg_split('/[-\.\/ ]/', $value);
+        }elseif ($format === 2) {
+            list($y, $d, $m) = preg_split('/[-\.\/ ]/', $value);
+        }elseif ($format === 3) {
+            list($d, $m, $y) = preg_split('/[-\.\/ ]/', $value);
+        }elseif ($format === 4) {
+            list($m, $d, $y) = preg_split('/[-\.\/ ]/', $value);
+        }elseif ($format === 5) {
+            $y = substr($value, 0, 4);
+            $m = substr($value, 4, 2);
+            $d = substr($value, 6, 2);
+        }elseif ($format === 6) {
+            $y = substr($value, 0, 4);
+            $d = substr($value, 4, 2);
+            $m = substr($value, 6, 2);
+        }else{
+            return false;
         }
 
-        return false;
+        return checkdate($m, $d, $y);
     }
 
     public function isTimestamp($timestamp)
     {
-        $check = (is_int($timestamp) OR is_float($timestamp))
-            ? $timestamp
-            : (string) (int) $timestamp;
-        $status =  ($check === $timestamp)
-        AND ( (int) $timestamp <=  PHP_INT_MAX)
-        AND ( (int) $timestamp >= ~PHP_INT_MAX);
+        $check = function ($timestamp){
+            $check = (is_int($timestamp) || is_float($timestamp)) ? $timestamp : (string) (int) $timestamp;
+            return (bool) (($check === $timestamp) && (( (int) $timestamp <=  PHP_INT_MAX) && ( (int) $timestamp >= ~PHP_INT_MAX)));
+        };
 
-        if ($status){
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param $timestamp
-     * @return bool
-     */
-    function isTimestampAlt($timestamp)
-    {
-
-        if(strtotime(date('d-m-Y H:i:s',$timestamp)) === (int)$timestamp) {
-            return true;
-        } else return false;
-
+        return $check($timestamp) || (strtotime(date('d-m-Y H:i:s', $timestamp)) === (int)$timestamp);
     }
 
     public function isZeroDate($value): bool
     {
         // http://stackoverflow.com/questions/8853956/check-if-date-is-equal-to-0000-00-00-000000
-        if(empty($value) || (is_null($value))){
+        if(empty($value)){
             $value = '0000-00-00';
         }
-        switch (trim($value))
-        {
-            case '0000-00-00 00:00:00' : $status = true; break;
-            case '0000-00-00'          : $status = true; break;
-            default                    : $status = false; break;
-        }
 
-        if ($status){
-            return true;
-        }
-        return false;
+        return match (trim($value)) {
+            '0000-00-00 00:00:00', '0000-00-00' => true,
+            default                             => false,
+        };
     }
 
     public function isDateTime($value, $format = 'Y-m-d H:i:s'): bool
     {
-        if ($this->isDate($value, $format)){
-            return true;
-        }
-        return false;
+        return $this->isDate($value, $format);
     }
 
     public function isDate($value, $format = 'Y-m-d'): bool
@@ -217,27 +187,12 @@ class TimeValidator
 
     public function isYear($value): bool
     {
-        if($this->respect()->date('Y')->validate($value)){
-            return true;
-        }
-        return false;
+        return $this->respect()->date('Y')->validate($value);
     }
 
     public function isTimezone($value): bool
     {
-        if(true === in_array($value, timezone_identifiers_list())){
-            return true;
-        }
-        return false;
-    }
-
-    public function isValidTimeStamp($timestamp)
-    {
-
-        if(strtotime(date('d-m-Y H:i:s', $timestamp)) === (int)$timestamp) {
-            return true;
-        } else return false;
-
+        return  in_array($value, timezone_identifiers_list());
     }
 
     /**
@@ -250,8 +205,7 @@ class TimeValidator
      */
     public function isDateOrTime(?string $date): bool
     {
-        $time = strtotime((string)$date);
-        return $time > 0;
+        return strtotime((string)$date) > 0;
     }
 
     /**
@@ -262,7 +216,7 @@ class TimeValidator
      */
     public function isThisWeek($time): bool
     {
-        return (self::factory($time)->format('W-Y') === self::factory()->format('W-Y'));
+        return ($this->pheg->dates()->factory($time)->format('W-Y') === $this->pheg->dates()->factory()->format('W-Y'));
     }
 
     /**
@@ -273,7 +227,7 @@ class TimeValidator
      */
     public function isThisMonth($time): bool
     {
-        return (self::factory($time)->format('m-Y') === self::factory()->format('m-Y'));
+        return ($this->pheg->dates()->factory($time)->format('m-Y') === $this->pheg->dates()->factory()->format('m-Y'));
     }
 
     /**
@@ -284,7 +238,7 @@ class TimeValidator
      */
     public function isThisYear($time): bool
     {
-        return (self::factory($time)->format('Y') === self::factory()->format('Y'));
+        return ($this->pheg->dates()->factory($time)->format('Y') === $this->pheg->dates()->factory()->format('Y'));
     }
 
     /**
@@ -295,7 +249,7 @@ class TimeValidator
      */
     public function isTomorrow($time): bool
     {
-        return (self::factory($time)->format('Y-m-d') === self::factory('tomorrow')->format('Y-m-d'));
+        return ($this->pheg->dates()->factory($time)->format('Y-m-d') === $this->pheg->dates()->factory('tomorrow')->format('Y-m-d'));
     }
 
     /**
@@ -306,7 +260,7 @@ class TimeValidator
      */
     public function isToday($time): bool
     {
-        return (self::factory($time)->format('Y-m-d') === self::factory()->format('Y-m-d'));
+        return ($this->pheg->dates()->factory($time)->format('Y-m-d') === $this->pheg->dates()->factory()->format('Y-m-d'));
     }
 
     /**
@@ -317,20 +271,14 @@ class TimeValidator
      */
     public function isYesterday($time): bool
     {
-        return (self::factory($time)->format('Y-m-d') === self::factory('yesterday')->format('Y-m-d'));
+        return ($this->pheg->dates()->factory($time)->format('Y-m-d') === $this->pheg->dates()->factory('yesterday')->format('Y-m-d'));
     }
 
     public function isDateGreater($date, $defaultDate = ''): bool
     {
+        $default = empty($defaultDate) ? strtotime($this->pheg->dates()->getCurrentTime()) : strtotime($defaultDate);
 
-        $date = strtotime($date);
-        if(empty($defaultDate)){
-            $default = strtotime($this->getCurrentTime());
-        }else{
-            $default = strtotime($defaultDate);
-        }
-
-        if($date > $default) {
+        if(strtotime($date) > $default) {
             echo '<span class="status expired">Expired</span>';
             return true;
         }

@@ -2,12 +2,14 @@
 
 namespace Simtabi\Enekia\Validators;
 
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
-class HtmlValidator
+class Html
 {
 
     use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
     /**
      * Check if a string has some html tags
