@@ -35,9 +35,4 @@ class IpAddressValidator
         return false;
     }
 
-    public function isInternetConnected($host = 'www.google.com')
-    {
-        return (bool) @fsockopen($host, 80, $iErrno, $sErrStr, 5);
-    }
-
 }

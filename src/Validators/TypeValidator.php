@@ -6,11 +6,10 @@ use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
 class TypeValidator
 {
+
     use WithRespectValidationTrait;
 
-    public function __construct()
-    {
-    }
+    private function __construct(){}
 
     public static function invoke(): self
     {
@@ -184,6 +183,37 @@ class TypeValidator
     protected function checkBasic(string $data, int $length, int $minLength = 4): bool
     {
         return $length < $minLength || $data[1] !== ':' || ($data[$length - 1] !== ';' && $data[$length - 1] !== '}');
+    }
+
+
+    public function isNumber($data): bool
+    {
+        return is_integer($data) || is_float($data);
+    }
+
+    public function isArray($data): bool
+    {
+        return is_array($data) && (empty($data) || array_keys($data) === range(0, count($data) - 1));
+    }
+
+    public function isObject($data): bool
+    {
+        return is_object($data) || (is_array($data) && !empty($data) && array_keys($data) !== range(0, count($data) - 1));
+    }
+
+    public function isJSON($value): bool
+    {
+
+        if (!is_string($value)) {
+            return false;
+        }
+
+        return $this->respect()->json()->validate($value);
+
+        // checks for calculating if the string given to it is JSON.
+        // So, it is the most perfect one, but it's slower than the other.
+        # Requires PHP 5.4 and above
+        // return !is_string($value) && is_object(json_decode($value)) && (json_last_error() == JSON_ERROR_NONE);
     }
 
 }

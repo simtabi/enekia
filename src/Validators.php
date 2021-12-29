@@ -82,11 +82,6 @@ final class Validators
         return new IpAddressValidator();
     }
 
-    public function json(): JsonValidator
-    {
-        return new JsonValidator();
-    }
-
     public function number(): NumberValidator
     {
         return new NumberValidator();
@@ -117,9 +112,9 @@ final class Validators
         return new TimeValidator($carbon, $timezone);
     }
 
-    public function type(): TypeValidator
+    public function dataType(): TypeValidator
     {
-        return new TypeValidator();
+        return TypeValidator::invoke();
     }
 
     public function url(): UrlValidator
