@@ -198,6 +198,11 @@ class Transfigure
         return is_integer($data) || is_float($data);
     }
 
+    public function isString($resource): bool
+    {
+        return is_string($resource);
+    }
+
     public function isArray($data): bool
     {
         return is_array($data) && (empty($data) || array_keys($data) === range(0, count($data) - 1));
@@ -225,12 +230,11 @@ class Transfigure
 
     public function isXml($resource): bool
     {
-        return Xml::invoke()->isValid($resource, null, true) || (@simplexml_load_string($resource) instanceof SimpleXMLElement);
-    }
+        if (!$this->isString($resource)) {
+            return false;
+        }
 
-    public function isString($resource): bool
-    {
-        return is_string($resource);
+        return Xml::invoke()->isValid($resource, null, true) || (@simplexml_load_string($resource) instanceof SimpleXMLElement);
     }
 
 }
