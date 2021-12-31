@@ -17,7 +17,7 @@ use Simtabi\Enekia\Validators\Password;
 use Simtabi\Enekia\Validators\PhoneNumber;
 use Simtabi\Enekia\Validators\PostalCode;
 use Simtabi\Enekia\Validators\Str;
-use Simtabi\Enekia\Validators\DataType;
+use Simtabi\Enekia\Validators\Transfigure;
 use Simtabi\Enekia\Validators\Url;
 use Simtabi\Enekia\Validators\Username;
 use Simtabi\Enekia\Validators\VersionNumber;
@@ -29,7 +29,6 @@ final class Validators
 {
 
     use WithRespectValidationTrait;
-    use WithGeneralValidatorsTrait;
 
     public function __construct()
     {
@@ -111,9 +110,9 @@ final class Validators
         return Time::invoke($carbon, $timezone);
     }
 
-    public function dataType(): DataType
+    public function dataType(): Transfigure
     {
-        return DataType::invoke();
+        return Transfigure::invoke();
     }
 
     public function url(): Url

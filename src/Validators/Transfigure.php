@@ -7,7 +7,7 @@ use SimpleXMLElement;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 use Simtabi\Pheg\Toolbox\Serialize;
 
-class DataType
+class Transfigure
 {
 
     use WithRespectValidationTrait;
@@ -225,7 +225,7 @@ class DataType
 
     public function isXml($resource): bool
     {
-        return Xml::invoke()->isValidNumber($resource, null, true) || (@simplexml_load_string($resource) instanceof SimpleXMLElement);
+        return Xml::invoke()->isValid($resource, null, true) || (@simplexml_load_string($resource) instanceof SimpleXMLElement);
     }
 
     public function isString($resource): bool
