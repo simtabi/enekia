@@ -4,7 +4,7 @@ namespace Simtabi\Enekia\Validators;
 
 use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
-use Simtabi\Pheg\Toolbox\File\FileSystem;
+use Simtabi\Pheg\Toolbox\Media\File\FileSystem;
 
 class File
 {
