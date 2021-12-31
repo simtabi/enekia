@@ -193,7 +193,6 @@ class DataType
         return $length < $minLength || $data[1] !== ':' || ($data[$length - 1] !== ';' && $data[$length - 1] !== '}');
     }
 
-
     public function isNumber($data): bool
     {
         return is_integer($data) || is_float($data);
@@ -216,17 +215,17 @@ class DataType
             return false;
         }
 
-        return $this->respect()->json()->validate($value);
+        return $this->respect()->json()->validate($value)
 
-        // checks for calculating if the string given to it is JSON.
-        // So, it is the most perfect one, but it's slower than the other.
-        # Requires PHP 5.4 and above
-        // return !is_string($value) && is_object(json_decode($value)) && (json_last_error() == JSON_ERROR_NONE);
+            // checks for calculating if the string given to it is JSON.
+            // So, it is the most perfect one, but it's slower than the other.
+            # Requires PHP 5.4 and above
+            || !is_string($value) && is_object(json_decode($value)) && (json_last_error() == JSON_ERROR_NONE);
     }
 
     public function isXml($resource): bool
     {
-        return Xml::invoke()->isValid($resource, null, true) || (@simplexml_load_string($resource) instanceof SimpleXMLElement);
+        return Xml::invoke()->isValidNumber($resource, null, true) || (@simplexml_load_string($resource) instanceof SimpleXMLElement);
     }
 
     public function isString($resource): bool

@@ -13,12 +13,8 @@ class Url
 
     public function isUrl($value): bool
     {
-        if($this->respect()->url()->validate($value)){
-            return true;
-        }
-        return false;
+        return $this->respect()->url()->validate($value);
     }
-
 
     /**
      * Checks to see if the page is being server over SSL or not
@@ -43,7 +39,6 @@ class Url
         return false;
     }
 
-
     /**
      * Is absolute url
      *
@@ -54,5 +49,7 @@ class Url
     {
         return strpos($path, '//') === 0 || preg_match('#^[a-z-]{3,}:\/\/#i', $path);
     }
+
+
 
 }

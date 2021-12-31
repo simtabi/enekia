@@ -4,7 +4,7 @@ namespace Simtabi\Enekia\Validators;
 
 use DOMDocument;
 use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
-use Simtabi\Pheg\Core\Exceptions\PhegException;
+use Exception;
 use function is_string;
 use LibXMLError;
 
@@ -56,16 +56,12 @@ final class Xml
         try {
             $this->setPath($xmlPath);
             $string = $this->getContents();
-        } catch (PhegException $e) {
+        } catch (Exception $e) {
             return false;
         }
 
         if (!empty($xsdPath)) {
-            try {
-                $xsdPath = $this->path;
-            } catch (PhegException $e) {
-                return false;
-            }
+            $xsdPath = $this->path;
         }
 
         return $this->isValidXmlString($string, $xsdPath);
@@ -83,7 +79,7 @@ final class Xml
                 return $this->isXMLValid($xml, $xsdPath);
             }
             return $this->isXMLValid($xml);
-        } catch (PhegException $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -92,7 +88,7 @@ final class Xml
      * @param  string      $xmlContent
      * @param  string|null $xsdPath
      * @return bool
-     * @throws PhegException
+     * @throws Exception
      */
     private function isXMLValid(string $xmlContent, string $xsdPath = null): bool
     {
@@ -113,18 +109,18 @@ final class Xml
 
     /**
      * @param  string $xmlContent
-     * @throws PhegException
+     * @throws Exception
      */
     private function checkEmptyWhenTrimmed(string $xmlContent): void
     {
         if (trim($xmlContent) === '') {
-            throw new PhegException(self::XML_EMPTY_TRIMMED);
+            throw new Exception(self::XML_EMPTY_TRIMMED);
         }
     }
 
     /**
      * @param  array<LibXMLError>|null $errors
-     * @throws PhegException
+     * @throws Exception
      */
     private function parseErrors(?array $errors): void
     {
@@ -141,7 +137,7 @@ final class Xml
             );
 
             if (!empty($reduced)) {
-                throw new PhegException(implode(self::NEW_LINE, $reduced));
+                throw new Exception(implode(self::NEW_LINE, $reduced));
             }
         }
     }
@@ -183,7 +179,7 @@ final class Xml
      *
      * @param string $path
      * @return self
-     * @throws PhegException
+     * @throws Exception
      */
     public function setPath(string $path): self
     {
@@ -195,30 +191,30 @@ final class Xml
 
     /**
      * @return bool
-     * @throws PhegException
+     * @throws Exception
      */
     private function isPath(): bool
     {
         if (!file_exists($this->path)) {
-            throw new PhegException(self::FILE_DOES_NOT_EXIST);
+            throw new Exception(self::FILE_DOES_NOT_EXIST);
         }
         return true;
     }
 
     /**
      * @return string
-     * @throws PhegException
+     * @throws Exception
      */
     private function getContents(): string
     {
         $contents = file_get_contents($this->path);
 
         if ($contents === false) {
-            throw new PhegException(self::FILE_COULD_NOT_BE_OPENED);
+            throw new Exception(self::FILE_COULD_NOT_BE_OPENED);
         }
 
         if ($contents === '') {
-            throw new PhegException(self::EMPTY_FILE);
+            throw new Exception(self::EMPTY_FILE);
         }
 
         return $contents;

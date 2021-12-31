@@ -4,6 +4,7 @@ namespace Simtabi\Enekia\Validators;
 
 use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Simtabi\Pheg\Toolbox\File\FileSystem;
 
 class File
 {
@@ -76,12 +77,34 @@ class File
     }
 
     /**
+     * Check is current path regular file
+     *
+     * @param string $path
+     * @return bool
+     */
+    public function isFile(string $path): bool
+    {
+        $path = FileSystem::invoke()->clean($path);
+        return file_exists($path) && is_file($path);
+    }
+
+    /**
+     * @param mixed $variable
+     * @return bool
+     */
+    public function isGdResource($variable): bool
+    {
+        return \is_resource($variable) && \strtolower(\get_resource_type($variable)) === 'gd';
+    }
+
+    /**
      * Check is format supported by lib
      *
      * @param string $format
+     * @param array $formats
      * @return bool
      */
-    public function isSupportedFormat(string $format): bool
+    public function isSupportedFormat(string $format, array $formats = []): bool
     {
         if ($format) {
             return $this->isJpeg($format) || $this->isPng($format) || $this->isGif($format) || $this->isWebp($format);
@@ -92,10 +115,8 @@ class File
 
     public function isEmptyDir($value): bool
     {
-        if (!is_readable($value))
-        {
-            return false;
-        }
+        if (!is_readable($value)) return false;
+
         $handle = opendir($value);
         while (false !== ($entry = readdir($handle))) {
             if ($entry != "." && $entry != "..") {

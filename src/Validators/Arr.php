@@ -55,7 +55,7 @@ class Arr
 
     public function isUsableArrayObject($value, $filter = true): bool
     {
-        if (!self::isArrayOrObject($value)){
+        if (!$this->isArrayOrObject($value)){
             return false;
         }
 
@@ -71,10 +71,7 @@ class Arr
 
     public function inArray($value = null, $list = []):bool
     {
-        if (in_array($value, $list)){
-            return true;
-        }
-        return false;
+        return in_array($value, $list);
     }
 
     public function isFoundInArray($needle, $haystack): bool

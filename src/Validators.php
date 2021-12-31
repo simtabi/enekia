@@ -106,7 +106,7 @@ final class Validators
         return Str::invoke();
     }
 
-    public function time(Carbon $carbon, $timezone = null): Time
+    public function time(Carbon $carbon = null, $timezone = null): Time
     {
         return Time::invoke($carbon, $timezone);
     }

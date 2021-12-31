@@ -26,7 +26,7 @@ class Vars
      * @param float $max
      * @return bool
      */
-    public function isIn(float $number, float $min, float $max): bool
+    public function isInMixAndMax(float $number, float $min, float $max): bool
     {
         return ($number >= $min && $number <= $max);
     }
@@ -74,6 +74,26 @@ class Vars
     public function isPositive(float $number, bool $zero = true): bool
     {
         return ($zero ? ($number >= 0) : ($number > 0));
+    }
+
+
+
+    /**
+     * Check if number is odd
+     * @param  int  $num integer to check
+     * @return boolean
+     */
+    public function isNumberOdd($num) {
+        return (($num - (2 * floor($num / 2))) == 1);
+    }
+
+    /**
+     * Check if number is even
+     * @param  int  $num integer to check
+     * @return boolean
+     */
+    public function isNumberEven($num) {
+        return (($num - (2 * floor($num / 2))) == 0);
     }
 
 }

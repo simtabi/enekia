@@ -18,7 +18,7 @@ class Time
      *
      * @var Carbon
      */
-    protected $carbonTime;
+    protected $carbon;
 
     /**
      * The difference in seconds between the Carbon time and current time.
@@ -39,19 +39,17 @@ class Time
     /**
      * Create a new Parser instance.
      *
-     * @param Carbon $carbon
-     * @param string $timezone
-     * @return void
+     * @param Carbon|null $carbon
+     * @param null $timezone
      */
-    private function __construct(Carbon $carbon, $timezone = null)
+    private function __construct(Carbon $carbon = null, $timezone = null)
     {
-        $this->carbonTime = $carbon;
-        $this->timezone   = $timezone;
-        $this->pheg       = Pheg::getInstance();
-        $this->setDifference($carbon);
+        $this->timezone = $timezone;
+        $this->carbon   = $carbon;
+        $this->pheg     = Pheg::getInstance();
     }
 
-    public static function invoke(Carbon $carbon, $timezone = null): self
+    public static function invoke(Carbon $carbon = null, $timezone = null): self
     {
         return new self($carbon, $timezone);
     }
@@ -63,7 +61,7 @@ class Time
      */
     protected function isMoreThanAMinute()
     {
-        return $this->carbonTime->diffInSeconds >= 60;
+        return $this->carbon->diffInSeconds >= 60;
     }
     
     /**
@@ -103,7 +101,7 @@ class Time
      */
     protected function isTheYearDifferent()
     {
-        return $this->carbonTime->year !== Carbon::now($this->timezone)->year;
+        return $this->carbon->year !== Carbon::now($this->timezone)->year;
     }
 
     public function isDateFormat($value = null, $format = 'MM/DD/YYYY')
@@ -211,10 +209,10 @@ class Time
     /**
      * Returns true if date passed is within this week.
      *
-     * @param string|int $time
+     * @param int|string $time
      * @return bool
      */
-    public function isThisWeek($time): bool
+    public function isThisWeek(int|string $time): bool
     {
         return ($this->pheg->dates()->factory($time)->format('W-Y') === $this->pheg->dates()->factory()->format('W-Y'));
     }
@@ -278,11 +276,6 @@ class Time
     {
         $default = empty($defaultDate) ? strtotime($this->pheg->dates()->getCurrentTime()) : strtotime($defaultDate);
 
-        if(strtotime($date) > $default) {
-            echo '<span class="status expired">Expired</span>';
-            return true;
-        }
-
-        return false;
+        return strtotime($date) > $default;
     }
 }

@@ -11,8 +11,10 @@ use libphonenumber\PhoneNumberUtil;
 use libphonenumber\ShortNumberInfo;
 use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Pheg\Core\CoreTools;
-use Simtabi\Pheg\Core\Services\Translator;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Exception;
+use Simtabi\Pheg\Toolbox\Transfigures\TypeConverter;
+use Simtabi\Pheg\Toolbox\Countries\Countries;
 
 class PhoneNumber
 {
@@ -20,71 +22,50 @@ class PhoneNumber
     use WithRespectValidationTrait;
     use WithInstanceTrait;
 
+    private array|string $errors;
+
+    /**
+     * @return array|string
+     */
+    public function getErrors(): array|string
+    {
+        return $this->errors;
+    }
+
     public function isValidCallingCode($value): bool
     {
-        return !Countries::getCountryNameByCallingCode($value) ? false : true;
+        return Countries::getCallingCode2CountryName($value);
     }
 
-    public function isValidPhoneNumber($value, $defaultRegion = CoreTools::DEFAULT_REGION): bool
+    public function isValidNumber($value, $defaultRegion = CoreTools::DEFAULT_REGION): bool
     {
 
-        // output variables
-        $status = false;
-        $errors = null;
+        // initialize class and assign variable
+        $phoneNumberUtility = PhoneNumberUtil::getInstance();
+        $phoneNumberObject  = $phoneNumberUtility->parse(str_replace(" ", "", trim($value)), $defaultRegion);
 
-        try {
+        // validate
+        $validNumber        = $phoneNumberUtility->isValidNumber($phoneNumberObject);
+        $possibleNumber     = $phoneNumberUtility->isPossibleNumber($phoneNumberObject);
 
-            // strip and remove white spaces from number
-            $value    = str_replace(" ", "", trim($value));
-
-            // initialize class and assign variable
-            $phoneNumberUtility = PhoneNumberUtil::getInstance();
-            $phoneNumberObject  = $phoneNumberUtility->parse($value, $defaultRegion);
-
-            // validate
-            $validNumber    = $phoneNumberUtility->isValidNumber($phoneNumberObject);
-            $possibleNumber = $phoneNumberUtility->isPossibleNumber($phoneNumberObject);
-
-            // if valid and possible number
-            if($validNumber && $possibleNumber){
-                $status = true;
-            }
-
-            // if not a possible number
-            else if (!$possibleNumber){
-                throw new CatchThis(Translator::_e('NOT_A_POSSIBLE_PHONE_NUMBER'));
-            }
-
-            // if not a valid number
-            else if (!$validNumber){
-                throw new CatchThis(Translator::_e('INVALID_PHONE_NUMBER'));
-            }
-
-        } catch (NumberParseException $e) {
-            $errors = $e->getMessage();
+        // if valid and possible number
+        if($validNumber && $possibleNumber){
+            return true;
         }
 
-        return DataType::toObject(array(
-            'status' => $status,
-            'errors' => $errors,
-        ));
-    }
-
-
-    public function isPhoneNumber($value, $defaultRegion = "KE"): bool
-    {
-        if ($this->isValidPhoneNumber($value, $defaultRegion)->status)
-            return true;
-        return false;
-    }
-
-    public function isCallingCode($value): bool
-    {
-        // if we can validate
-        if((false === Countries::getCountryNameByCallingCode($value))){
+        // if not a possible number
+        if (!$possibleNumber){
+            $this->errors[] = 'NOT_A_POSSIBLE_PHONE_NUMBER';
             return false;
         }
-        return true;
+
+        // if not a valid number
+        if (!$validNumber){
+            $this->errors[] = 'INVALID_PHONE_NUMBER';
+            return false;
+        }
+
+        return false;
     }
 
 }

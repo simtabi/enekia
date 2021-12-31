@@ -37,7 +37,7 @@ class Country
     {
 
         // if we can validate it in both alpha2 & alpha3 and Respect can't either
-        if((!Countries::getCountryCurrencyCodeByCode($value)) && (!$this->respect()->currencyCode()->validate($value))){
+        if((!Countries::getCountryCode2CurrencyCode($value)) && (!$this->respect()->currencyCode()->validate($value))){
             return false;
         }
         return true;

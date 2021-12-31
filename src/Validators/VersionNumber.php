@@ -28,10 +28,7 @@ class VersionNumber
      */
     public function isVersionNumber($value): bool
     {
-        if(preg_match('#^v?(\d{1,3}+(?:\.(?:\d{1,3})){0,2})(-(?:pre|beta|b|RC|alpha|a|pl|p)(?:\.?(?:\d+))?)?$#i', $value)){
-            return true;
-        }
-        return false;
+       return preg_match('#^v?(\d{1,3}+(?:\.(?:\d{1,3})){0,2})(-(?:pre|beta|b|RC|alpha|a|pl|p)(?:\.?(?:\d+))?)?$#i', $value);
     }
 
     public function isVersionReleaseNumber($value): bool
@@ -44,10 +41,7 @@ class VersionNumber
         #  1        = version 1, any release, any modification
         #  *        = any version, any release, any modification
 
-        if(preg_match('/^(\d+\.)?(\d+\.)?(\*|\d+)$/', $value)){
-            return true;
-        }
-        return false;
+        return preg_match('/^(\d+\.)?(\d+\.)?(\*|\d+)$/', $value);
     }
     
 }

@@ -33,7 +33,7 @@ class Str
         $allowed = '~\-!@#$%\^&\*\(\)';
 
         $value = trim($value);
-        if(Respect::stringType()->validate($value)){
+        if($this->respect()->stringType()->validate($value)){
             return (!preg_match("/^[\w\s$allowed]{1,$length}$/", trim($value))) ? false : true;
         }
         return false;
@@ -80,17 +80,14 @@ class Str
         }
 
         $haystack = $this->low($haystack);
-        $needle = $this->low($needle);
+        $needle   = $this->low($needle);
 
         return $needle === '' || $this->sub($haystack, -$this->len($needle)) === $needle;
     }
 
     public function isSlug($value): bool
     {
-        if($this->respect()->slug()->validate($value)){
-            return true;
-        }
-        return false;
+        return $this->respect()->slug()->validate($value);
     }
 
 }
