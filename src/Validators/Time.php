@@ -214,7 +214,7 @@ class Time
      */
     public function isThisWeek(int|string $time): bool
     {
-        return ($this->pheg->dates()->factory($time)->format('W-Y') === $this->pheg->dates()->factory()->format('W-Y'));
+        return ($this->pheg->time()->factory($time)->format('W-Y') === $this->pheg->time()->factory()->format('W-Y'));
     }
 
     /**
@@ -225,7 +225,7 @@ class Time
      */
     public function isThisMonth($time): bool
     {
-        return ($this->pheg->dates()->factory($time)->format('m-Y') === $this->pheg->dates()->factory()->format('m-Y'));
+        return ($this->pheg->time()->factory($time)->format('m-Y') === $this->pheg->time()->factory()->format('m-Y'));
     }
 
     /**
@@ -236,7 +236,7 @@ class Time
      */
     public function isThisYear($time): bool
     {
-        return ($this->pheg->dates()->factory($time)->format('Y') === $this->pheg->dates()->factory()->format('Y'));
+        return ($this->pheg->time()->factory($time)->format('Y') === $this->pheg->time()->factory()->format('Y'));
     }
 
     /**
@@ -247,7 +247,7 @@ class Time
      */
     public function isTomorrow($time): bool
     {
-        return ($this->pheg->dates()->factory($time)->format('Y-m-d') === $this->pheg->dates()->factory('tomorrow')->format('Y-m-d'));
+        return ($this->pheg->time()->factory($time)->format('Y-m-d') === $this->pheg->time()->factory('tomorrow')->format('Y-m-d'));
     }
 
     /**
@@ -258,7 +258,7 @@ class Time
      */
     public function isToday($time): bool
     {
-        return ($this->pheg->dates()->factory($time)->format('Y-m-d') === $this->pheg->dates()->factory()->format('Y-m-d'));
+        return ($this->pheg->time()->factory($time)->format('Y-m-d') === $this->pheg->time()->factory()->format('Y-m-d'));
     }
 
     /**
@@ -269,12 +269,12 @@ class Time
      */
     public function isYesterday($time): bool
     {
-        return ($this->pheg->dates()->factory($time)->format('Y-m-d') === $this->pheg->dates()->factory('yesterday')->format('Y-m-d'));
+        return ($this->pheg->time()->factory($time)->format('Y-m-d') === $this->pheg->time()->factory('yesterday')->format('Y-m-d'));
     }
 
     public function isDateGreater($date, $defaultDate = ''): bool
     {
-        $default = empty($defaultDate) ? strtotime($this->pheg->dates()->getCurrentTime()) : strtotime($defaultDate);
+        $default = empty($defaultDate) ? strtotime($this->pheg->time()->getCurrentTime()) : strtotime($defaultDate);
 
         return strtotime($date) > $default;
     }
