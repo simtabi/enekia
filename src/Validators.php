@@ -12,8 +12,8 @@ use Simtabi\Enekia\Validators\File;
 use Simtabi\Enekia\Validators\Email;
 use Simtabi\Enekia\Validators\Html;
 use Simtabi\Enekia\Validators\IpAddress;
+use Simtabi\Enekia\Validators\Traits\WithValidatorsTrait;
 use Simtabi\Enekia\Validators\Transfigure;
-use Simtabi\Enekia\Validators\Vars;
 use Simtabi\Enekia\Validators\Password;
 use Simtabi\Enekia\Validators\PhoneNumber;
 use Simtabi\Enekia\Validators\PostalCode;
@@ -28,6 +28,7 @@ final class Validators
 {
 
     use WithRespectValidationTrait;
+    use WithValidatorsTrait;
 
     public function __construct()
     {
@@ -77,11 +78,6 @@ final class Validators
     public function ipAddress(): IpAddress
     {
         return IpAddress::invoke();
-    }
-
-    public function vars(): Vars
-    {
-        return Vars::invoke();
     }
 
     public function password(): Password

@@ -1,16 +1,9 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Simtabi\Enekia\Validators;
+namespace Simtabi\Enekia\Validators\Traits;
 
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
-
-class Vars
+trait WithValidatorsTrait
 {
-
-    use WithRespectValidationTrait;
-    use WithInstanceTrait;
-
     public function isNotANumber(int $number): bool
     {
         $number = !empty($number) && (is_integer($number) || is_numeric($number) || is_float($number)) ? (float) $number : 0;
