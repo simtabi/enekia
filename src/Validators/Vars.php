@@ -2,7 +2,6 @@
 
 namespace Simtabi\Enekia\Validators;
 
-use Simtabi\Enekia\Validators\Traits\WithGeneralValidatorsTrait;
 use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
@@ -10,7 +9,6 @@ class Vars
 {
 
     use WithRespectValidationTrait;
-    use WithGeneralValidatorsTrait;
     use WithInstanceTrait;
 
     public function isNotANumber(int $number): bool
