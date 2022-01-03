@@ -246,12 +246,12 @@ class Transfigure
 
     public function isArray($value): bool
     {
-        return $this->respect()->arrayType()->validate($value) || is_array($value) && (empty($value) || array_keys($value) === range(0, count($value) - 1));
+        return $this->respect()->arrayType()->validate($value) || is_array($value);
     }
 
     public function isObject($value): bool
     {
-        return $this->respect()->objectType()->validate($value) || is_object($value) || (is_array($value) && !empty($value) && array_keys($value) !== range(0, count($value) - 1));
+        return $this->respect()->objectType()->validate($value) || is_object($value);
     }
 
     public function isArrayOrObject($value): bool
