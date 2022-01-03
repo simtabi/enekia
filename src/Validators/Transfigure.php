@@ -1,253 +1,346 @@
 <?php declare(strict_types=1);
 
-namespace Simtabi\Pheg\Toolbox\Transfigures;
+namespace Simtabi\Enekia\Validators;
 
-/**
- * A class that handles the detection and conversion of certain resource formats / content types into other formats.
- * The current formats are supported: XML, JSON, Array, Object, Serialized
- *
- * @version	2.0.0
- * @package	mjohnson.utility
- */
-use Exception;
 use DOMDocument;
-use stdClass;
-use Simtabi\Enekia\Validators;
+use SimpleXMLElement;
+use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
+use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 use Simtabi\Pheg\Toolbox\Serialize;
 
-final class Transfigure {
+class Transfigure
+{
 
-    private Validators $validators;
-    private Serialize  $serialize;
-    private Xml2Array  $xml2Array;
-    private            $resource;
+    use WithRespectValidationTrait;
+    use WithInstanceTrait;
 
-    private const      UNKNOWN_DATA_TYPE_MSG = 'Unknown data type';
-    private const      DATA_IS_EMPTY_MSG     = 'Data to be converted can not be empty';
-
-    private function __construct()
-    {
-        $this->validators = Validators::invoke();
-        $this->serialize  = Serialize::invoke();
-        $this->xml2Array  = Xml2Array::invoke();
-    }
+    private function __construct(){}
 
     public static function invoke(): self
     {
         return new self();
     }
 
-    public function arrayToXml(): ArrayToXml
+    /**
+     * Check if the given string is valid base 64 encoded.
+     *
+     * @param string $value The value to check.
+     * @return bool Return `true` if valid base 64 encoded, `false` for not.
+     *@since 1.0.4
+     */
+    public function isBase64Encoded($value)
     {
-        return ArrayToXml::invoke();
-    }
-
-    public function xml2Array(): Xml2Array
-    {
-        return Xml2Array::invoke();
-    }
-
-    public function xmlResponse(array $array): XmlResponse
-    {
-        return XmlResponse::invoke($array);
-    }
-
-    public function utf8Encode(string|array|object $resource): object|array|string
-    {
-        if (is_string($resource)) {
-            return utf8_encode($resource);
-        } elseif (is_array($resource)) {
-            foreach ($resource as $key => $value) {
-                $resource[utf8_encode($key)] = $this->utf8Encode($value);
-            }
-        } elseif (is_object($resource)) {
-            foreach ($resource as $key => $value) {
-                $resource->{$key} = $this->utf8Encode($value);
-            }
+        if (!is_string($value)) {
+// if the value to check is NOT string
+// Due to base64_decode() on PHP document site require that this argument should be string, if it is not then just return false.
+            return false;
         }
 
-        return $resource;
-    }
-
-    public function utf8Decode(string|array|object $resource): object|array|string
-    {
-        if (is_string($resource)) {
-            return utf8_decode($resource);
-        } elseif (is_array($resource)) {
-            foreach ($resource as $key => $value) {
-                $resource[utf8_decode($key)] = $this->utf8Decode($value);
-            }
-        } elseif (is_object($resource)) {
-            foreach ($resource as $key => $value) {
-                $resource->{$key} = $this->utf8Decode($value);
-            }
+        $decoded = base64_decode($value, true);
+        if (false === $decoded) {
+            return false;
         }
 
-        return $resource;
-    }
-
-    public function stringToArray(string $resource): array
-    {
-        return [$resource];
-    }
-
-    public function json2Array(string $resource, $associative = true)
-    {
-        return json_decode($resource, $associative);
-    }
-
-    public function array2Json(array $resource): bool|string
-    {
-        return json_encode($resource);
-    }
-
-    public function string2Json(string $resource): bool|string
-    {
-        return json_encode([$resource]);
-    }
-
-    public function string2Object(string $resource): stdClass
-    {
-        return $this->array2Object([$resource]);
-    }
-
-    public function json2Object(string $resource)
-    {
-        return json_decode($resource, true);
-    }
-
-    public function serialize(mixed $resource)
-    {
-        return $this->serialize->serialize($resource);
-    }
-
-    public function unserialze(string $resource)
-    {
-        return $this->serialize->unserialize($resource);
-    }
-
-    public function arrayObject2Xml(array|object $resource, array $config = ArrayToXmlConfig::DEFAULTS): DOMDocument
-    {
-        return ArrayToXml::invoke($config)->buildXml($resource);
-    }
-
-    public function xmlToArray(mixed $resource, bool $fromDOM = false, array $config = XmlToArrayConfig::DEFAULTS): array|XmlResponse|string
-    {
-        return Xml2Array::invoke()->convert($resource, $fromDOM, $config);
-    }
-
-    public function array2Object(array $resource): stdClass
-    {
-
-        $object = new stdClass();
-
-        foreach ($resource as $key => $value) {
-            if (is_array($value)) {
-                $object->{$key} = $this->array2Object($value);
-            } else {
-                $object->{$key} = $value;
-            }
+        if (false === json_encode([$decoded])) {
+            return false;
         }
 
-        return $object;
-    }
+        return true;
+    }// isBase64Encoded
 
-    public function object2Array(object $resource): array
+    /**
+     * Check if JSON encoded or valid JSON string.
+     *
+     * Please double check with type, otherwise it may cause unexpected result when you encode/decode it.<br>
+     * Example: `$Serializer->isJSONEncoded(true);` This will return true but when you decode, it will becomes 1 (int).<br>
+     * `$Serializer->isJSONEncoded('12345');` This will be also return true but when you decide, it will becomes 12345 (int).<br>
+     *
+     * @link https://stackoverflow.com/a/3845829/128761 Original source code.
+     * @since 1.0.3
+     * @param mixed $value The value to check.
+     * @return boolean Return `true` if it is valid JSON, `false` for not.
+     */
+    public function isJSONEncoded($value)
     {
-
-        $resource = get_object_vars($resource);
-        return array_map(array('self', 'object2Array'), $resource);
-
-        $array = [];
-
-        foreach ($resource as $key => $value)
-        {
-            if (is_object($value)) {
-                $array[$key] = $this->object2Array($value);
-            } else {
-                $array[$key] = $value;
-            }
+        if (!is_scalar($value)) {
+            return false;
         }
 
-        return $array;
-    }
+        $pcre_regex = '
+/
+(?(DEFINE)
+(?<number>   -? (?= [1-9]|0(?!\d) ) \d+ (\.\d+)? ([eE] [+-]? \d+)? )
+    (?<boolean>   true | false | null )
+        (?<string>    " ([^"\\\\]* | \\\\ ["\\\\bfnrt\/] | \\\\ u [0-9a-f]{4} )* " )
+            (?<array>     \[  (?:  (?&json)  (?: , (?&json)  )*  )?  \s* \] )
+                (?<pair>      \s* (?&string) \s* : (?&json)  )
+                    (?<object>    \{  (?:  (?&pair)  (?: , (?&pair)  )*  )?  \s* \} )
+                        (?<json>   \s* (?: (?&number) | (?&boolean) | (?&string) | (?&array) | (?&object) ) \s* )
+                            )
+                            \A (?&json) \Z
+                            /six
+                            ';
 
-    private function throwUnknownDataTypeError()
-    {
-        throw new Exception(self::UNKNOWN_DATA_TYPE_MSG);
-    }
+        $pcre_regex = trim($pcre_regex);
 
-    private function throwEmptyDataError()
-    {
-        throw new Exception(self::DATA_IS_EMPTY_MSG);
-    }
+        if (preg_match($pcre_regex, $value) === 1) {
+            return true;
+        }
+        return false;
+    }// isJSONEncoded
 
-    private function validate(): Validators\Transfigure
+    /**
+     * Is serialized string.
+     *
+     * @link https://core.trac.wordpress.org/browser/tags/4.7.3/src/wp-includes/functions.php#L341 Reference from WordPress.
+     * @link https://gist.github.com/cs278/217091 Reference from Github cs278/is_serialized.php
+     * @param string $value The string to check.
+     * @return boolean Return true if serialized, false for otherwise.
+     */
+    public function isSerialized($value)
     {
-        return $this->validators->dataType();
-    }
+        if (!is_string($value)) {
+            return false;
+        }
 
-    public function getDataType(): string
-    {
-        $resource = $this->resource;
-        return match ($resource) {
-            $this->validate()->isArray($resource)      => 'array',
-            $this->validate()->isObject($resource)     => 'object',
-            $this->validate()->isJson($resource)       => 'json',
-            $this->validate()->isSerialized($resource) => 'serialized',
-            $this->validate()->isXml($resource)        => 'xml',
-            $this->validate()->isString($resource)     => 'string',
-            default                                    => self::UNKNOWN_DATA_TYPE_MSG,
+        $value = trim($value);
+
+        $status = function ($string){
+            if ($string === 'N;') {
+                // if serialized string is NULL.
+                return true;
+            }
+
+            $string_encoding = mb_detect_encoding($string);
+            $length = mb_strlen($string, $string_encoding);
+            $last_char = mb_substr($string, -1, NULL, $string_encoding);
+            unset($string_encoding);
+
+            if ($length < 4) {
+                // if total characters of this string (string length) is less than 4 then it is not serialized except NULL which is verified above.
+                unset($last_char, $length);
+                return false;
+            }
+
+            if ($string[1] !== ':') {
+                // if character number 2 (offset 1, start at 0) from this string is not colon means it is not serialized string.
+                unset($last_char, $length);
+                return false;
+            }
+
+            if (in_array($string[0], ['b', 'i', 'd', 's']) && $last_char !== ';') {
+                // if first character maybe boolean, integer, double or float, string but last character is not semicolon means it is not serialized string.
+                unset($last_char, $length);
+                return false;
+            } elseif (in_array($string[0], ['a', 'O']) && $last_char !== '}') {
+                // last character of array, object is not right curly bracket means it is not serialized string.
+                unset($last_char, $length);
+                return false;
+            }
+
+            // switch to first character of this string.
+            switch ($string[0]) {
+                case 'b':
+                    // this maybe boolean
+                    if ($length > 4 || ($string[2] !== '0' && $string[2] !== '1')) {
+                        // if string length is more than 4 or character number 3 (offset 2) is not 0 (false) and is not 1 (true) means it is not serialized string.
+                        return false;
+                    } elseif ($length == 4 && ($string[2] === '0' || $string[2] === '1')) {
+                        // if string length is exactly 4 and character number 3 (offset 2) is 0 (false) or 1 (true) means it is serialized string.
+                        return true;
+                    } else {
+                        return false;
+                    }
+                case 'i':
+                    // this maybe integer
+                    return (boolean) preg_match('#^'.$string[0].':[0-9\-]+\\'.$last_char.'#', $string);
+                case 'd':
+                    // this maybe double or float
+                    return (boolean) preg_match('#^'.$string[0].':[0-9\.E\-\+]+\\'.$last_char.'#', $string);
+                case 's':
+                    // this maybe string
+                    $exp_string = explode(':', $string);
+                    if (isset($exp_string[1]) && isset($exp_string[2])) {
+                        // if found number of total characters in serialize, count to make sure that it is matched.
+                        unset($last_char, $length);
+                        // number in serialized string type seems to use `strlen` because it is not counting the real unicode characters.
+                        return (intval($exp_string[1]) === intval(strlen(trim($exp_string[2], ';"'))));
+                    }
+                    unset($exp_string, $last_char, $length);
+                    return false;
+                case 'a':
+                    // this maybe array
+                case 'O':
+                    // this maybe object
+                    return (boolean) preg_match('#^'.$string[0].':[0-9]+\:#s', $string);
+            }// endswitch;
+
+            return false;
         };
+
+        return Serialize::invoke()->is($value) || $status($value);
+
+    }// isSerialized
+
+    /**
+     * Check some basic requirements of all serialized strings
+     *
+     * @param string $value
+     * @param int $length
+     * @param int $minLength
+     * @return bool
+     */
+    protected function checkBasic(string $value, int $length, int $minLength = 4): bool
+    {
+        return $length < $minLength || $value[1] !== ':' || ($value[$length - 1] !== ';' && $value[$length - 1] !== '}');
     }
 
-    public function toArray($resource): mixed
+    public function isNumber($value): bool
     {
-        if (empty($resource)) $this->throwEmptyDataError();
-
-        $this->resource = $resource;
-        return match ($resource) {
-            $this->validate()->isArray($resource)      => $resource,
-            $this->validate()->isObject($resource)     => $this->object2Array($resource),
-            $this->validate()->isJson($resource)       => $this->json2Array($resource),
-            $this->validate()->isSerialized($resource) => $this->json2Array($resource),
-            $this->validate()->isXml($resource)        => $this->xmlToArray($resource),
-            $this->validate()->isString($resource)     => $this->stringToArray($resource),
-            default                                    => [$resource],
-        };
+        return is_integer($value) || is_float($value);
     }
 
-    public function toJson($resource)
+    public function isString($value): bool
     {
-        if (empty($resource)) $this->throwEmptyDataError();
-
-        $this->resource = $resource;
-        return match ($resource) {
-            $this->validate()->isJson($resource)       => $resource,
-            $this->validate()->isArray($resource)      => $this->array2Json($resource),
-            $this->validate()->isObject($resource)     => $this->object2Array($resource),
-            $this->validate()->isSerialized($resource) => $this->json2Array($resource),
-            $this->validate()->isXml($resource)        => $this->xmlToArray($resource),
-            $this->validate()->isString($resource)     => $this->string2Json($resource),
-            default                                    => $this->array2Json([$resource]),
-        };
+        return is_string($value);
     }
 
-    public function toObject($resource)
+    public function isJson($value): bool
     {
 
-        if (empty($resource)) $this->throwEmptyDataError();
+        if (!is_string($value)) {
+            return false;
+        }
 
-        $this->resource = $resource;
-        return match ($resource) {
-            $this->validate()->isObject($resource)     => $resource,
-            $this->validate()->isArray($resource)      => $this->array2Object($resource),
-            $this->validate()->isJson($resource)       => $this->json2Object($resource),
-            $this->validate()->isSerialized($resource) => $this->array2Object($this->serialize($resource)),
-            $this->validate()->isXml($resource)        => $this->xmlToArray($resource),
-            $this->validate()->isString($resource)     => $this->string2Object($resource),
-            default                                    => $this->array2Object([$resource]),
-        };
+        return $this->respect()->json()->validate($value)
+
+            // checks for calculating if the string given to it is JSON.
+            // So, it is the most perfect one, but it's slower than the other.
+            # Requires PHP 5.4 and above
+            || !is_string($value) && is_object(json_decode($value)) && (json_last_error() == JSON_ERROR_NONE);
+    }
+
+    public function isXml($value): bool
+    {
+        if (!$this->isString($value)) {
+            return false;
+        }
+
+        return Xml::invoke()->isValid($value, null, true) || (@simplexml_load_string($value) instanceof SimpleXMLElement);
+    }
+
+
+    /**
+     * Determines if an array is associative.
+     *
+     * @param  array $value
+     * @return bool
+     */
+    public function isAssocArray(array $value): bool
+    {
+        if (array_keys( $value ) !== range( 0, count( $value ) - 1 )){
+            return true;
+        }
+        return false;
+    }
+
+    public function isArray($value): bool
+    {
+        return $this->respect()->arrayType()->validate($value) || is_array($value) && (empty($value) || array_keys($value) === range(0, count($value) - 1));
+    }
+
+    public function isObject($value): bool
+    {
+        return $this->respect()->objectType()->validate($value) || is_object($value) || (is_array($value) && !empty($value) && array_keys($value) !== range(0, count($value) - 1));
+    }
+
+    public function isArrayOrObject($value): bool
+    {
+
+        if($this->respect()->arrayVal()->validate($value)){
+            return true;
+        }
+        elseif($this->respect()->arrayType()->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isUsableArrayObject($value, $filter = true): bool
+    {
+        if (!$this->isArrayOrObject($value)){
+            return false;
+        }
+
+        // remove empty values
+        $value = true === $filter ? Arr::invoke()->filter($value) : $value;
+
+        // if array is not empty
+        if ($this->respect()->arrayVal()->notEmpty()->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function inArray($value = null, array $list = []):bool
+    {
+        return in_array($value, $list);
+    }
+
+    public function isFoundInArray($needle, array $values): bool
+    {
+        $found = false;
+        foreach ($values as $key => $item) {
+            if ($needle === $key) {
+                $found = true;
+                break;
+            } elseif (is_array($item)) {
+                $found = $this->isFoundInArray($needle, $item);
+                if($found) {
+                    break;
+                }
+            }
+        }
+        return $found;
+    }
+
+    public function isInArrayKey($key, array $values): bool
+    {
+        return array_key_exists((string)$key, $values);
+    }
+
+    /**
+     * Check is value exists in the array
+     *
+     * @param mixed $value
+     * @param array $values
+     * @param bool  $returnKey
+     * @return mixed
+     *
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
+    public function isInArray($value, array $values, bool $returnKey = false)
+    {
+        $status = in_array($value, $values, true);
+
+        if ($returnKey) {
+            if ($status) {
+                return array_search($value, $values, true);
+            }
+
+            return null;
+        }
+
+        return $status;
+    }
+
+    /**
+     * @param object $values
+     * @return bool
+     */
+    public function isEmptyObject(object $values): bool
+    {
+        return empty((array) $values);
     }
 
 }

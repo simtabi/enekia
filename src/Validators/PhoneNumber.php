@@ -13,7 +13,6 @@ use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Pheg\Core\CoreTools;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 use Exception;
-use Simtabi\Pheg\Toolbox\Transfigures\Transfigure;
 use Simtabi\Pheg\Toolbox\Countries\Countries;
 
 class PhoneNumber

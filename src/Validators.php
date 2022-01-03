@@ -12,17 +12,16 @@ use Simtabi\Enekia\Validators\File;
 use Simtabi\Enekia\Validators\Email;
 use Simtabi\Enekia\Validators\Html;
 use Simtabi\Enekia\Validators\IpAddress;
+use Simtabi\Enekia\Validators\Transfigure as DataType;
 use Simtabi\Enekia\Validators\Vars;
 use Simtabi\Enekia\Validators\Password;
 use Simtabi\Enekia\Validators\PhoneNumber;
 use Simtabi\Enekia\Validators\PostalCode;
 use Simtabi\Enekia\Validators\Str;
-use Simtabi\Enekia\Validators\Transfigure;
 use Simtabi\Enekia\Validators\Url;
 use Simtabi\Enekia\Validators\Username;
 use Simtabi\Enekia\Validators\VersionNumber;
 use Simtabi\Enekia\Validators\Xml;
-use Simtabi\Enekia\Validators\Traits\WithGeneralValidatorsTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
 final class Validators
@@ -110,9 +109,9 @@ final class Validators
         return Time::invoke($carbon, $timezone);
     }
 
-    public function dataType(): Transfigure
+    public function transfigure(): DataType
     {
-        return Transfigure::invoke();
+        return DataType::invoke();
     }
 
     public function url(): Url
