@@ -253,7 +253,7 @@ class Transfigure
 
     public function isObject($value): bool
     {
-        return $this->respect()->objectType()->validate($value) || is_object($value) || !$value instanceof Model || !$value instanceof stdClass;
+        return $this->respect()->objectType()->validate($value) || is_object($value) || $value instanceof Model || $value instanceof stdClass;
     }
 
     public function isArrayOrObject($value): bool
