@@ -3,7 +3,6 @@
 namespace Simtabi\Enekia\Validators;
 
 use DOMDocument;
-use Illuminate\Database\Eloquent\Model;
 use SimpleXMLElement;
 use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
@@ -16,7 +15,7 @@ class Transfigure
     use WithRespectValidationTrait;
     use WithInstanceTrait;
 
-    private function __construct(){}
+    private function __construct() {}
 
     public static function invoke(): self
     {
@@ -33,8 +32,8 @@ class Transfigure
     public function isBase64Encoded($value)
     {
         if (!is_string($value)) {
-// if the value to check is NOT string
-// Due to base64_decode() on PHP document site require that this argument should be string, if it is not then just return false.
+            // if the value to check is NOT string
+            // Due to base64_decode() on PHP document site require that this argument should be string, if it is not then just return false.
             return false;
         }
 
@@ -253,7 +252,7 @@ class Transfigure
 
     public function isObject($value): bool
     {
-        return $this->respect()->objectType()->validate($value) || is_object($value) || $value instanceof Model || $value instanceof stdClass;
+        return $this->respect()->objectType()->validate($value) || is_object($value) || $value instanceof stdClass;
     }
 
     public function isArrayOrObject($value): bool
