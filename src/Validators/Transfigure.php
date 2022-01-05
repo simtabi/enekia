@@ -3,10 +3,12 @@
 namespace Simtabi\Enekia\Validators;
 
 use DOMDocument;
+use Illuminate\Database\Eloquent\Model;
 use SimpleXMLElement;
 use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 use Simtabi\Pheg\Toolbox\Serialize;
+use stdClass;
 
 class Transfigure
 {
@@ -251,7 +253,7 @@ class Transfigure
 
     public function isObject($value): bool
     {
-        return $this->respect()->objectType()->validate($value) || is_object($value);
+        return $this->respect()->objectType()->validate($value) || is_object($value) || !$value instanceof Model || !$value instanceof stdClass;
     }
 
     public function isArrayOrObject($value): bool
