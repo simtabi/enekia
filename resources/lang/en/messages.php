@@ -133,6 +133,7 @@ return [
         'full' => 'The given :attribute word is not allowed, and is offensive.',
     ],
     'exists_in_model'                   => 'Some of the given ids do not exist.',
+    'multiple_emails'                   => 'Email address isn\'t valid: :emails',
     'authorized'                        => 'You are not authorized to use this value.',
     'delimited'                         => [
         'unique' => 'You may not specify duplicates.',
