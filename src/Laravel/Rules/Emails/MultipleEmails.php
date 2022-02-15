@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Simtabi\Enekia\Laravel\Rules;
+namespace Simtabi\Enekia\Laravel\Rules\Emails;
 
 use Illuminate\Contracts\Validation\Rule;
 use Validator;
