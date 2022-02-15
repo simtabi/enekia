@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Rule;
 
 // https://github.com/jonathanjanssens/laravel-validate-email-domain
 
-class EmailDomain
+class EmailDomain implements Rule
 {
     /**
      * @var string
