@@ -3,8 +3,8 @@
 namespace Simtabi\Enekia;
 
 use Carbon\Carbon;
+use Respect\Validation\Validator as Respect;
 use Simtabi\Enekia\Validators\Age;
-use Simtabi\Enekia\Validators\Arr;
 use Simtabi\Enekia\Validators\Colors;
 use Simtabi\Enekia\Validators\Country;
 use Simtabi\Enekia\Validators\Time;
@@ -12,119 +12,114 @@ use Simtabi\Enekia\Validators\File;
 use Simtabi\Enekia\Validators\Email;
 use Simtabi\Enekia\Validators\Html;
 use Simtabi\Enekia\Validators\IpAddress;
-use Simtabi\Enekia\Validators\Traits\WithValidatorsTrait;
-use Simtabi\Enekia\Validators\Transfigure;
 use Simtabi\Enekia\Validators\Password;
 use Simtabi\Enekia\Validators\PhoneNumber;
 use Simtabi\Enekia\Validators\PostalCode;
 use Simtabi\Enekia\Validators\Str;
+use Simtabi\Enekia\Validators\Transfigure;
 use Simtabi\Enekia\Validators\Url;
 use Simtabi\Enekia\Validators\Username;
 use Simtabi\Enekia\Validators\VersionNumber;
 use Simtabi\Enekia\Validators\Xml;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 
 final class Validators
 {
 
-    use WithRespectValidationTrait;
-    use WithValidatorsTrait;
+    public function __construct(){}
 
-    private function __construct(){}
-
-    public static function invoke(): self
+    public function respect(): Respect
     {
-        return new self();
+        return new Respect();
     }
 
     public function age(): Age
     {
-        return Age::invoke();
+        return new Age();
     }
 
     public function arr(): Arr
     {
-        return Arr::invoke();
+        return new Arr;
     }
 
     public function colors(): Colors
     {
-        return Colors::invoke();
+        return new Colors();
     }
 
     public function country(): Country
     {
-        return Country::invoke();
+        return new Country;
     }
 
     public function email(): Email
     {
-        return Email::invoke();
+        return new Email;
     }
 
     public function file(): File
     {
-        return File::invoke();
+        return new File;
     }
 
     public function html(): Html
     {
-        return Html::invoke();
+        return new Html;
     }
 
     public function ipAddress(): IpAddress
     {
-        return IpAddress::invoke();
+        return new IpAddress;
     }
 
     public function password(): Password
     {
-        return Password::invoke();
+        return new Password;
     }
 
     public function phoneNumber(): PhoneNumber
     {
-        return PhoneNumber::invoke();
+        return new PhoneNumber;
     }
 
     public function postalCode(): PostalCode
     {
-        return PostalCode::invoke();
+        return new PostalCode;
     }
 
     public function str(): Str
     {
-        return Str::invoke();
+        return new Str;
     }
 
     public function time(Carbon $carbon = null, $timezone = null): Time
     {
-        return Time::invoke($carbon, $timezone);
+        return new Time($carbon, $timezone);
     }
 
     public function transfigure(): Transfigure
     {
-        return Transfigure::invoke();
+        return new Transfigure();
     }
 
     public function url(): Url
     {
-        return Url::invoke();
+        return new Url;
     }
 
     public function username(): Username
     {
-        return Username::invoke();
+        return new Username;
     }
 
     public function versionNumber(): VersionNumber
     {
-        return VersionNumber::invoke();
+        return new VersionNumber;
     }
 
     public function xml(): Xml
     {
-        return Xml::invoke();
+        return (new Xml());
     }
 
 }

@@ -2,15 +2,18 @@
 
 namespace Simtabi\Enekia\Validators;
 
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Respect\Validation\Validator as Respect;
 use Simtabi\Pheg\Toolbox\Media\File\FileSystem;
 
 class File
 {
 
-    use WithRespectValidationTrait;
-    use WithInstanceTrait;
+    public function __construct(){}
+
+    public function respect(): Respect
+    {
+        return new Respect();
+    }
 
     /**
      * Checks if image has JPEG/JPG format
@@ -84,7 +87,7 @@ class File
      */
     public function isFile(string $path): bool
     {
-        $path = FileSystem::invoke()->clean($path);
+        $path = (new FileSystem())->clean($path);
         return file_exists($path) && is_file($path);
     }
 

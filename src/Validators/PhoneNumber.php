@@ -9,19 +9,22 @@ use libphonenumber\PhoneNumberToCarrierMapper;
 use libphonenumber\PhoneNumberToTimeZonesMapper;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\ShortNumberInfo;
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
+use Respect\Validation\Validator as Respect;
 use Simtabi\Pheg\Core\CoreTools;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
 use Exception;
 use Simtabi\Pheg\Toolbox\Countries\Countries;
 
 class PhoneNumber
 {
 
-    use WithRespectValidationTrait;
-    use WithInstanceTrait;
-
     private array|string $errors;
+
+    public function __construct(){}
+
+    public function respect(): Respect
+    {
+        return new Respect();
+    }
 
     /**
      * @return array|string
@@ -31,7 +34,7 @@ class PhoneNumber
         return $this->errors;
     }
 
-    public function isValidCallingCode($value): bool
+    public function isValidCallingCode($value): bool|string
     {
         return Countries::getCallingCode2CountryName($value);
     }

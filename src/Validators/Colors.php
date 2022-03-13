@@ -2,14 +2,17 @@
 
 namespace Simtabi\Enekia\Validators;
 
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Respect\Validation\Validator as Respect;
 
 class Colors
 {
 
-    use WithRespectValidationTrait;
-    use WithInstanceTrait;
+    public function __construct(){}
+
+    public function respect(): Respect
+    {
+        return new Respect();
+    }
 
     /** @link  http://stackoverflow.com/questions/12385500/regex-pattern-for-rgb-rgba-hsl-hsla-color-coding */
     public const PATTERN_HEX  = '/^#(?:[0-9a-fA-F]{3}){1,2}$/';

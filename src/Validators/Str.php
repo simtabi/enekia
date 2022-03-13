@@ -2,14 +2,17 @@
 
 namespace Simtabi\Enekia\Validators;
 
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Respect\Validation\Validator as Respect;
 
 class Str
 {
 
-    use WithRespectValidationTrait;
-    use WithInstanceTrait;
+    public function __construct(){}
+
+    public function respect(): Respect
+    {
+        return new Respect();
+    }
 
     /***
      * Function is_title

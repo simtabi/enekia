@@ -2,24 +2,332 @@
 
 namespace Simtabi\Enekia\Validators;
 
-use DOMDocument;
-use SimpleXMLElement;
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Respect\Validation\Validator as Respect;
+use Simtabi\Pheg\Toolbox\Arr\Arr as PhegArr;
 use Simtabi\Pheg\Toolbox\Serialize;
 use stdClass;
 
 class Transfigure
 {
 
-    use WithRespectValidationTrait;
-    use WithInstanceTrait;
+    public function __construct() {}
 
-    private function __construct() {}
-
-    public static function invoke(): self
+    public function respect(): Respect
     {
-        return new self();
+        return new Respect();
+    }
+
+    public function isNotANumber(int $number): bool
+    {
+        $number = !empty($number) && (is_integer($number) || is_numeric($number) || is_float($number)) ? (float) $number : 0;
+
+        return $number === 0;
+    }
+
+    /**
+     * Returns true if the number is within the min and max.
+     *
+     * @param float $number
+     * @param float $min
+     * @param float $max
+     * @return bool
+     */
+    public function isInMixAndMax(float $number, float $min, float $max): bool
+    {
+        return ($number >= $min && $number <= $max);
+    }
+
+    /**
+     * Is the current value even?
+     *
+     * @param int $number
+     * @return bool
+     */
+    public function isEven(int $number): bool
+    {
+        return ($number % 2 === 0);
+    }
+
+    /**
+     * Is the current value negative; less than zero.
+     *
+     * @param float $number
+     * @return bool
+     */
+    public function isNegative(float $number): bool
+    {
+        return ($number < 0);
+    }
+
+    /**
+     * Is the current value odd?
+     *
+     * @param int $number
+     * @return bool
+     */
+    public function isOdd(int $number): bool
+    {
+        return !$this->isEven($number);
+    }
+
+    /**
+     * Is the current value positive; greater than or equal to zero.
+     *
+     * @param float $number
+     * @param bool  $zero
+     * @return bool
+     */
+    public function isPositive(float $number, bool $zero = true): bool
+    {
+        return ($zero ? ($number >= 0) : ($number > 0));
+    }
+
+    /**
+     * Check if number is odd
+     * @param  int  $num integer to check
+     * @return boolean
+     */
+    public function isNumberOdd($num) {
+        return (($num - (2 * floor($num / 2))) == 1);
+    }
+
+    /**
+     * Check if number is even
+     * @param  int  $num integer to check
+     * @return boolean
+     */
+    public function isNumberEven($num) {
+        return (($num - (2 * floor($num / 2))) == 0);
+    }
+
+    public function minLength($value = null, $minimum = 0): bool
+    {
+        if($this->respect()->stringType()->length($minimum, null)->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function maxLength($value = null, $maximum = 5): bool
+    {
+        if($this->respect()->stringType()->length(null, $maximum)->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function exactLength($value = null, $compareTo = 0): bool
+    {
+        if($this->respect()->equals($compareTo)->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function greaterThan($value = null, $min = 0, $inclusive = true): bool
+    {
+        if (true === $inclusive){
+            if($this->respect()->intVal()->max($min, true)->validate($value)){
+                return true;
+            }
+        }elseif($this->respect()->intVal()->max($min)->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function lessThan($value = null, $max = 0, $inclusive = true): bool
+    {
+        if (true === $inclusive){
+            if($this->respect()->intVal()->min($max)->validate($value)){
+                return true;
+            }
+        }elseif($this->respect()->intVal()->min($max)->validate($value)){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function alpha($value = null): bool
+    {
+        if($this->respect()->alpha()->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function alphanumeric($value = null): bool
+    {
+        if($this->respect()->alnum()->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function startsWith($value = null, $match = null): bool
+    {
+        if($this->respect()->startsWith($value)->validate($match)){
+            return true;
+        }
+        return false;
+    }
+
+    public function endsWith($value = null, $match = null): bool
+    {
+        if($this->respect()->endsWith($value)->validate($match)){
+            return true;
+        }
+        return false;
+    }
+
+    public function contains($value = null, $match = null): bool
+    {
+        if($this->respect()->contains($value)->validate($match)){
+            return true;
+        }
+        return false;
+    }
+
+    public function regex($value = null, $regex = null): bool
+    {
+        if($this->respect()->regex($regex)->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isGreaterThan($value, $length = 5): bool
+    {
+        if($this->respect()->stringType()->length(null, $length)->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isLessThan($value, $length = 5): bool
+    {
+        if($this->respect()->stringType()->length($length, null)->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isIdentical($val1, $val2): bool
+    {
+        if($this->respect()->equals($val1)->validate($val2)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isInRange($value, $minimum, $maximum): bool
+    {
+        if($this->respect()->stringType()->length($minimum, $maximum)->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isInteger($value): bool
+    {
+        if($this->respect()->intVal()->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isNumeric($value): bool
+    {
+        if($this->respect()->numeric()->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isBool($value): bool
+    {
+        return $this->isBoolean($value);
+    }
+
+    public function isBoolean($value): bool
+    {
+        if($this->respect()->boolVal()->validate($value)){
+            return true;
+        }elseif($this->respect()->boolType()->validate($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isTrue($value): bool
+    {
+        if($this->respect()->trueVal()->validate($value) == true){
+            return true;
+        }
+        return false;
+    }
+
+    public function isFloat($value): bool
+    {
+        if (is_float($value)){
+            return true;
+        }
+        return false;
+    }
+
+    public function isFalse($value): bool
+    {
+        if($this->respect()->trueVal()->validate($value) == false){
+            return true;
+        }
+        return false;
+    }
+
+    public function isEmpty($value): bool
+    {
+
+        // if is an array or an object
+        if ($this->isArrayOrObject($value)){
+            if ($this->isUsableArrayObject($value)){
+                return true;
+            }
+        }
+        elseif ( empty($value) && strlen($value) == 0 ){
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Compare string to null designation
+     *
+     * @param  string $str
+     * @return bool
+     */
+    public function isNull(string $str): bool
+    {
+        if (!isset($str) || trim($str) === '' || ($str === '<null>') || $str === 'null') {
+            return true;
+        }
+        return  false;
+    }
+
+    /**
+     * Determine whether a variable has a non-empty value.
+     *
+     * Alternative to {@see empty()} that accepts non-empty values:
+     * - _0_ (0 as an integer)
+     * - _0.0_ (0 as a float)
+     * - _"0"_ (0 as a string)
+     *
+     * @param  mixed $number The value to be checked.
+     * @return boolean Returns true if var exists and has a non-empty value. Otherwise, returns true.
+     */
+    public function isBlank(mixed $number): bool
+    {
+        return empty($number) && !is_numeric($number);
     }
 
     /**
@@ -179,7 +487,7 @@ class Transfigure
             return false;
         };
 
-        return Serialize::invoke()->is($value) || $status($value);
+        return (new Serialize)->is($value) || $status($value);
 
     }// isSerialized
 
@@ -203,7 +511,14 @@ class Transfigure
 
     public function isString($value): bool
     {
-        return is_string($value);
+
+        // ensure it's of a string type value and !empty
+        if( $this->respect()->StringType()->validate($value) && !(empty($value) && strlen($value) == 0  || is_null($value)))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public function isJson($value): bool
@@ -227,9 +542,8 @@ class Transfigure
             return false;
         }
 
-        return Xml::invoke()->isValid($value, null, true) || (@simplexml_load_string($value) instanceof SimpleXMLElement);
+        return (new Xml())->isValid($value, null, true) || (@simplexml_load_string($value) instanceof SimpleXMLElement);
     }
-
 
     /**
      * Determines if an array is associative.
@@ -274,7 +588,7 @@ class Transfigure
         }
 
         // remove empty values
-        $value = true === $filter ? Arr::invoke()->filter($value) : $value;
+        $value = true === $filter ? (new PhegArr)->filter($value) : $value;
 
         // if array is not empty
         if ($this->respect()->arrayVal()->notEmpty()->validate($value)){

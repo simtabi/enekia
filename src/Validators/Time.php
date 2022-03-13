@@ -3,15 +3,11 @@
 namespace Simtabi\Enekia\Validators;
 
 use Carbon\Carbon;
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Respect\Validation\Validator as Respect;
 use Simtabi\Pheg\Pheg;
 
 class Time
 {
-
-    use WithRespectValidationTrait;
-    use WithInstanceTrait;
 
     /**
      * The Carbon time instance.
@@ -42,16 +38,16 @@ class Time
      * @param Carbon|null $carbon
      * @param null $timezone
      */
-    private function __construct(Carbon $carbon = null, $timezone = null)
+    public function __construct(Carbon $carbon = null, $timezone = null)
     {
         $this->timezone = $timezone;
         $this->carbon   = $carbon;
         $this->pheg     = Pheg::getInstance();
     }
 
-    public static function invoke(Carbon $carbon = null, $timezone = null): self
+    public function respect(): Respect
     {
-        return new self($carbon, $timezone);
+        return new Respect();
     }
 
     /**

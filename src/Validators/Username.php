@@ -2,36 +2,44 @@
 
 namespace Simtabi\Enekia\Validators;
 
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Respect\Validation\Validator as Respect;
+use Simtabi\Enekia\Validators\Transfigure;
 
 class Username
 {
 
-    use WithRespectValidationTrait;
-    use WithInstanceTrait;
+    public function __construct(){}
+
+    public function respect(): Respect
+    {
+        return new Respect();
+    }
 
     public function isUsername($username, $minLength = 5, $maxLength = 32, $startWithAlphabets = false): bool
     {
 
+        $tr = new Transfigure();
+
         // trim username
         $username  = trim($username);
 
-        $minLength = !self::isInteger($minLength) ? 5 : $minLength;
+        $minLength = !$tr->isInteger($minLength) ? 5 : $minLength;
 
         // validate username maximum length
-        $maxLength = !self::isInteger($maxLength) ? 32 : $maxLength;
+        $maxLength = !$tr->isInteger($maxLength) ? 32 : $maxLength;
 
         // validate username length
-        if(!$this->respect()->stringType()->length($minLength, $maxLength, true)->validate($username)){
+        if(!$this->respect()->stringType()->length($minLength, $maxLength, true)->validate($username))
+        {
             return false;
         }
 
         // if we are to strictly start with alphabets
-        $regex     = $startWithAlphabets ? '[A-Za-z]' : '';
+        $regex = $startWithAlphabets ? '[A-Za-z]' : '';
         if(preg_match('/^'.$regex.'[A-Za-z0-9\d_]{5,'.$maxLength.'}$/', $username)){
             return true;
         }
+
         return false;
     }
 

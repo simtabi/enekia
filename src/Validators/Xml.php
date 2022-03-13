@@ -3,7 +3,6 @@
 namespace Simtabi\Enekia\Validators;
 
 use DOMDocument;
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
 use Exception;
 use function is_string;
 use LibXMLError;
@@ -16,8 +15,6 @@ use LibXMLError;
  */
 final class Xml
 {
-
-    use WithInstanceTrait;
 
     public const UTF_8    = 'utf-8';
     public const VERSION  = '1.0';
@@ -41,6 +38,8 @@ final class Xml
      * @var string
      */
     private $encoding = self::UTF_8;
+
+    public function __construct(){}
 
     public function isValid(string $xmlStringOrFilePath, ?string $xsdFilePath = null, $fromString = false): bool
     {

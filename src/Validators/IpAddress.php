@@ -2,16 +2,20 @@
 
 namespace Simtabi\Enekia\Validators;
 
-use Simtabi\Enekia\Validators\Traits\WithInstanceTrait;
-use Simtabi\Enekia\Validators\Traits\WithRespectValidationTrait;
+use Respect\Validation\Validator as Respect;
 
 class IpAddress
 {
 
-    use WithRespectValidationTrait;
-    use WithInstanceTrait;
+    public function __construct(){}
 
-    public function isIP($value) {
+    public function respect(): Respect
+    {
+        return new Respect();
+    }
+
+    public function isIP($value)
+    {
         return $this->respect()->ip()->validate($value);
     }
 
