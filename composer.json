@@ -13,7 +13,7 @@
     "require": {
         "php": ">=8.0",
         "snipe/banbuilder": "^2.2.5",
-        "league/iso3166": "^3.0",
+        "league/iso3166": "^4.0.0",
         "eonx-com/currencies": "^1.0.3",
         "astrotomic/iso639": "^1.0.0",
         "divineomega/password_exposed": "^3.2.0",
