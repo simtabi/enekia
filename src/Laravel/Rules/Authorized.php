@@ -51,7 +51,7 @@ class Authorized extends AbstractRule implements Rule
 
         return __('ekenia::messages.authorized', [
             'attribute' => $this->attribute,
-            'ability' => $this->ability,
+            'ability'   => $this->ability,
             'className' => $classBasename,
         ]);
     }

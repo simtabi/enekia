@@ -129,8 +129,8 @@ return [
     'postal_code_dutch'                 => 'The :attribute must be a valid dutch post code',
     'is_offensive_word'                 => 'The given :attribute word is not allowed, and is offensive.',
     'is_a_state_in_north_america'       => [
-        'abbr' => 'The given :attribute word is not allowed, and is offensive.',
-        'full' => 'The given :attribute word is not allowed, and is offensive.',
+        'abbr' => 'The given :attribute must be valid abbreviation for a valid State in North America',
+        'full' => 'The given :attribute must the full name of a valid State in North America.',
     ],
     'exists_in_model'                   => 'Some of the given ids do not exist.',
     'multiple_emails'                   => 'Email address isn\'t valid: :emails',
