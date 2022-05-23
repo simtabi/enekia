@@ -3,8 +3,8 @@
 namespace Simtabi\Enekia\Laravel\Rules\Localization;
 
 use Illuminate\Contracts\Validation\Rule;
+use Simtabi\Enekia\Helpers\NorthAmericanStates;
 use Simtabi\Enekia\Laravel\AbstractRule;
-use Simtabi\Enekia\Laravel\Helpers\NorthAmericanStates;
 use Exception;
 
 class IsAStateInNorthAmerica extends AbstractRule implements Rule
