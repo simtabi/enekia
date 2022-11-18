@@ -7,8 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use Simtabi\Enekia\Laravel\Providers\Validators\Base64ValidationServiceProvider;
 use Simtabi\Enekia\Laravel\Providers\Validators\PasswordHistoryValidationServiceProvider;
 use Simtabi\Enekia\Laravel\Providers\Validators\UrlValidationServiceProvider;
+use Simtabi\Enekia\Laravel\Providers\Validators\DisposableServiceProvider;
 use Simtabi\Enekia\Laravel\Validator;
-use Simtabi\Enekia\Laravel\Validators\Disposable\PhoneNumber\DisposableServiceProvider;
 
 class EnekiaServiceProvider extends ServiceProvider
 {
