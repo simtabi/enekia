@@ -34,7 +34,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Simtabi\\Enekia\\": "src"
+            "Simtabi\\Enekia\\Laravel\\": "src/Laravel/",
+            "Simtabi\\Enekia\\Vanilla\\": "src/Vanilla/"
         }
     },
     "autoload-dev": {
