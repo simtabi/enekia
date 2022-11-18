@@ -1,6 +1,6 @@
 <?php
 
-namespace Simtabi\Enekia;
+namespace Simtabi\Enekia\Laravel;
 
 use Illuminate\Contracts\Validation\Rule;
 use Simtabi\Enekia\Laravel\Exceptions\NotExistingRuleException;

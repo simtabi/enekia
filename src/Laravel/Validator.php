@@ -1,6 +1,6 @@
 <?php
 
-namespace Simtabi\Enekia;
+namespace Simtabi\Enekia\Laravel;
 
 use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
