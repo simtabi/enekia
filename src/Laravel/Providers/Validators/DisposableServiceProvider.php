@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Simtabi\Enekia\Laravel\Validators\Disposable\PhoneNumber;
+namespace Simtabi\Enekia\Laravel\Providers\Validators;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider;
