@@ -42,10 +42,10 @@ class EnekiaServiceProvider extends ServiceProvider
         $this->registerConsoles();
 
         $this->app->booted(function () {
-            $this->app->register(Base64ValidationServiceProvider::class);
-            $this->app->register(DisposableServiceProvider::class);
-            $this->app->register(PasswordHistoryValidationServiceProvider::class);
-            $this->app->register(UrlValidationServiceProvider::class);
+           // $this->app->register(Base64ValidationServiceProvider::class);
+          // $this->app->register(DisposableServiceProvider::class);
+            // $this->app->register(PasswordHistoryValidationServiceProvider::class);
+           // $this->app->register(UrlValidationServiceProvider::class);
         });
     }
 
