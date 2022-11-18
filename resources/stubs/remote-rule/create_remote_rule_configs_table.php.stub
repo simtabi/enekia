@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('enekia_remote_rule_configs', function (Blueprint $table) {
+            $table->uuid('id')->index()->unique();
+            $table->string('name');
+            $table->text('url');
+            $table->string('method');
+            $table->text('headers')->nullable();
+            $table->text('json')->nullable();
+            $table->unsignedInteger('timeout')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('enekia_remote_rule_configs');
+    }
+};
