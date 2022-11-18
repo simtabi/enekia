@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Simtabi\Enekia\Vanilla\Validators;
+namespace Simtabi\Enekia\Vanilla;
 
 use Carbon\Carbon;
 use Respect\Validation\Validator as Respect;
