@@ -13,14 +13,15 @@
         }
     ],
     "require": {
-        "php": "^7.3|^7.4|^8.0",
+        "php": "^8.0||^8.1||^8.2",
         "ext-fileinfo": "*",
         "ext-bcmath": "*",
         "ext-libxml": "*",
         "ext-curl": "*",
-        "illuminate/validation": "~7|~8|~9",
+        "illuminate/validation": "~7||~8||~9",
         "divineomega/password_exposed": "^3.2.0",
         "moneyphp/money": "^4",
+        "caneara/axiom": "^v3.2.1",
         "league/iso3166": "^3.0",
         "spatie/enum": "^2.2|^3.0",
         "myclabs/php-enum": "^1.6",

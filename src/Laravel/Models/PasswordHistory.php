@@ -3,7 +3,7 @@
 namespace Simtabi\Enekia\Laravel\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Simtabi\Laranail\Supports\Model\Traits\UUID\HasUuid;
+use Simtabi\Laranail\Traits\Models\Traits\UUID\HasUuid;
 
 class PasswordHistory extends Model
 {
