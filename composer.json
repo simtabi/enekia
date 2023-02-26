@@ -18,7 +18,7 @@
         "ext-bcmath": "*",
         "ext-libxml": "*",
         "ext-curl": "*",
-        "illuminate/validation": "~7||~8||~9",
+        "illuminate/validation": "~9||~10",
         "divineomega/password_exposed": "^3.2.0",
         "moneyphp/money": "^4",
         "caneara/axiom": "^v3.2.1",
